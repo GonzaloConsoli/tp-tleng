@@ -1,0 +1,15 @@
+e
+f
+ad
+bd
+cd
+aad
+abd
+acd
+bbd
+bcd
+ccd
+aabd
+abcd
+bbcd
+ccad
