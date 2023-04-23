@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from automata import AFND
+from automata.afnd import SpecialSymbol
 
 
 __all__ = [
@@ -73,6 +74,9 @@ class Lambda(RegEx):
 
     def __str__(self):
         return "λ"
+    
+    def get_alphabet(self) -> set:
+        return set([SpecialSymbol.Lambda])
 
 
 class Char(RegEx):
