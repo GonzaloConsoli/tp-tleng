@@ -46,6 +46,12 @@ class RegEx(ABC):
         """
         pass
 
+    def derive(self, char):
+        """
+        Retorna la derivada de la expresion regular respecto de un simbolo
+        """
+        if (len(char) > 1):
+            raise ValueError("Se debe derivar respecto a solo un caracter")
 
 class Empty(RegEx):
     """Expresión regular que denota el lenguaje vacío (∅)."""
