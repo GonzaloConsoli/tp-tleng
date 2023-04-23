@@ -53,6 +53,13 @@ class RegEx(ABC):
         if (len(char) > 1):
             raise ValueError("Se debe derivar respecto a solo un caracter")
 
+    @abstractmethod   
+    def epsilon(self):
+        """
+        Retorna lambda si la expresion regular acepta lambda, vacio si no
+        """
+        pass
+
 class Empty(RegEx):
     """Expresión regular que denota el lenguaje vacío (∅)."""
 
@@ -67,6 +74,17 @@ class Empty(RegEx):
     
     def get_alphabet(self) -> set:
         return set()
+    
+    def derive(self, char):
+        super().derive(char)
+
+        return self
+    
+    def __eq__(self, __value: object) -> bool:
+        return isinstance(self, __value.__class__)
+    
+    def epsilon(self):
+        return Empty()
 
 
 class Lambda(RegEx):
@@ -83,6 +101,17 @@ class Lambda(RegEx):
     
     def get_alphabet(self) -> set:
         return set([SpecialSymbol.Lambda])
+    
+    def derive(self, char):
+        super().derive(char)
+
+        return Empty()
+
+    def __eq__(self, __value: object) -> bool:
+        return isinstance(self, __value.__class__)
+    
+    def epsilon(self):
+        return Lambda()
 
 
 class Char(RegEx):
@@ -103,6 +132,20 @@ class Char(RegEx):
 
     def get_alphabet(self) -> set:
         return set(self.char)
+    
+    def derive(self, char):
+        super().derive(char)
+
+        if char == self.char:
+            return Lambda()
+        else:
+            return Empty()
+        
+    def epsilon(self):
+        return Empty()
+    
+    def __eq__(self, __value: object) -> bool:
+        return isinstance(self, __value.__class__) and self.char == __value.char
 
 class Concat(RegEx):
     """Expresión regular que denota la concatenación de dos expresiones regulares."""
@@ -126,6 +169,17 @@ class Concat(RegEx):
     
     def get_alphabet(self) -> set:
         return set.union(self.exp1.get_alphabet(), self.exp2.get_alphabet())
+    
+    def derive(self, char):
+        super().derive(char)
+
+        return Union(Concat(self.exp1.derive(char), self.exp2), Concat(self.exp1.epsilon(), self.exp2.derive(char)))
+
+    def epsilon(self):
+        return Empty()
+    
+    def __eq__(self, __value: object) -> bool:
+        return super().__eq__(__value)
 
 
 class Union(RegEx):
@@ -147,7 +201,12 @@ class Union(RegEx):
     
     def get_alphabet(self) -> set:
         return set.union(self.exp1.get_alphabet(), self.exp2.get_alphabet())
-
+    
+    def epsilon(self):
+        if self.exp1.epsilon() == Lambda() or self.exp2.epsilon() == Lambda():
+            return Lambda()
+        else:
+            return Empty()
 
 class Star(RegEx):
     """Expresión regular que denota la clausura de Kleene de otra expresión regular."""
@@ -171,6 +230,9 @@ class Star(RegEx):
     
     def get_alphabet(self) -> set:
         return self.exp.get_alphabet()
+
+    def epsilon(self):
+        return Lambda()
 
 
 class Plus(RegEx):
@@ -196,3 +258,8 @@ class Plus(RegEx):
     def get_alphabet(self) -> set:
         return self.exp.get_alphabet()
 
+    def epsilon(self):
+        if self.exp.epsilon() == Lambda():
+            return Lambda()
+        else:
+            return Empty()
