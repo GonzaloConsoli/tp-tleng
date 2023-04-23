@@ -38,6 +38,13 @@ class RegEx(ABC):
         """
         pass
 
+    @abstractmethod
+    def get_alphabet(self) -> set:
+        """
+        Retorna el alfabeto asociado a una expresion regular
+        """
+        pass
+
 
 class Empty(RegEx):
     """Expresión regular que denota el lenguaje vacío (∅)."""
@@ -50,6 +57,9 @@ class Empty(RegEx):
 
     def __str__(self):
         return "∅"
+    
+    def get_alphabet(self) -> set:
+        return set()
 
 
 class Lambda(RegEx):
