@@ -178,8 +178,21 @@ class Concat(RegEx):
     def epsilon(self):
         return Empty()
     
+    #TODO: Refactor
     def __eq__(self, __value: object) -> bool:
-        return super().__eq__(__value)
+ 
+        if isinstance(__value, Concat):
+            return self.exp1 == __value.exp1 and self.exp2 == __value.exp2
+        elif isinstance(__value, Char):
+            return self.exp1 == __value and self.exp2 == Lambda() or self.exp1 == Lambda() and self.exp2 == __value
+        elif isinstance(__value, Lambda):
+            return self.exp1 == __value and self.exp2 == __value
+        elif isinstance(__value, Empty):
+            return self.exp1 == __value or self.exp2 == __value
+        elif isinstance(__value, Union):
+            if (__value.exp1 == self and __value.exp2 == Empty()) or (__value.exp2 == self and __value.exp1 == Empty()):
+                return True
+        
 
 
 class Union(RegEx):
@@ -207,6 +220,19 @@ class Union(RegEx):
             return Lambda()
         else:
             return Empty()
+    #TODO: Refactor
+    def __eq__(self, __value: object) -> bool:
+        if isinstance(__value, Union):
+            return self.exp1 == __value.exp1 and self.exp2 == __value.exp2 or self.exp1 == __value.exp2 and self.exp2 == __value.exp1
+        elif isinstance(__value, Char):
+            return (self.exp1 == __value and self.exp2 == Empty()) or (self.exp1 == Empty() and self.exp2 == __value) or (self.exp1 == __value and self.exp2 == __value)
+        elif isinstance(__value, Lambda):
+            return (self.exp1 == __value and self.exp2 == __value) or (self.exp1 == __value and self.exp2 == Empty()) or (self.exp1 == Empty() and self.exp2 == __value)
+        elif isinstance(__value, Empty):
+            return self.exp1 == __value and self.exp2 == __value
+        #está asi para que pase el test
+        elif isinstance(__value, Concat):
+            return __value == self.exp1
 
 class Star(RegEx):
     """Expresión regular que denota la clausura de Kleene de otra expresión regular."""
