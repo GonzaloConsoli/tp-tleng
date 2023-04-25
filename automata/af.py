@@ -35,18 +35,19 @@ class AF(ABC):
             raise ValueError(f"El estado {state} no pertenece al autómata.")
         self.initial_state = state
 
-    def normalize_states(self):
+    def normalize_states(self, append_str=""):
         """
         Normaliza los nombres de los estados según la convención q0, q1, q2, ...
 
         Modifica el autómata (no crea una copia) y devuelve el autómata modificado.
+        append_str: cadena que se agrega al final de cada nombre de estado para hacer operaciones entre automatas.
         """
         new_names = {}
         if self.initial_state is not None:
-            new_names[self.initial_state] = "q0"
+            new_names[self.initial_state] = "q0" + append_str
         for i, state in enumerate(self.states - {self.initial_state}):
             if state not in new_names:
-                new_names[state] = f"q{i + 1}"
+                new_names[state] = f"q{i + 1}" + append_str
 
         for old_name, new_name in new_names.items():
             self._rename_state(old_name, new_name)
@@ -60,7 +61,8 @@ class AF(ABC):
         table = []
         for state in self.transitions:
             row = [
-                f"{state}{'*' if state in self.final_states else ('^' if state == self.initial_state else '')}"]
+                f"{state}{'*' if state in self.final_states else ('^' if state == self.initial_state else '')}"
+            ]
             row.extend(self._print_transitions(state).values())
             table.append(row)
         return tabulate(table, header, tablefmt="fancy_grid")
