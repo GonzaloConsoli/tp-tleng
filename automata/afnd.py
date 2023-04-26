@@ -2,6 +2,7 @@ from enum import StrEnum
 from typing import Hashable
 
 from automata.af import AF
+from automata.afd import AFD
 from collections import deque
 
 __all__ = ["AFND"]
@@ -87,3 +88,63 @@ class AFND(AF):
                 already_on[s] = False
 
         return len(self.final_states.intersection(set(old_states))) > 0
+
+    def to_afd(self) -> AFD:
+        def lambda_closure_states(T: set) -> frozenset:
+            stack = deque(T)
+            res = set(T)
+            while stack:
+                t = stack.pop()
+                for u in self.transitions[t].get(SpecialSymbol.Lambda, {}):
+                    if u not in res:
+                        res.add(u)
+                        stack.append(u)
+            return frozenset(res)
+
+        def move(T: set, a: str) -> set:
+            res = set()
+            for t in T:
+                if self.transitions[t].get(a):
+                    for s in self.transitions[t].get(a):
+                        res.add(s)
+            return res
+
+        dtran = {}
+        dstates = {}
+
+        initial_state = set()
+        initial_state.add(self.initial_state)
+        initial_state_closure = lambda_closure_states(initial_state)
+        dstates[initial_state_closure] = True
+
+        while any(dstates.values()):
+            truthies = dict(filter(lambda x: x[1], dstates.items()))
+            for set_of_states, value in truthies.items():
+                if value:
+                    dstates[set_of_states] = False
+                    for a in self.alphabet:
+                        states_moves_to = lambda_closure_states(move(set_of_states, a))
+                        if states_moves_to and states_moves_to not in dstates.keys():
+                            dstates[states_moves_to] = True
+                        dtran[set_of_states] = {a: states_moves_to} | (
+                            dtran[set_of_states] if dtran.get(set_of_states) else {}
+                        )
+
+        afd = AFD()
+        # Adding states
+        for qi in dstates:
+            is_final = bool(self.final_states.intersection(qi))
+            if qi != initial_state_closure:
+                afd.add_state(qi, final=is_final)
+            else:
+                afd.add_state(initial_state_closure, final=is_final)
+                afd.mark_initial_state(initial_state_closure)
+
+        # Adding transitions
+        for qi in dstates:
+            for a, qj in dtran[qi].items():
+                if qj:
+                    afd.add_transition(qi, qj, a)
+
+        afd.normalize_states()
+        return afd
