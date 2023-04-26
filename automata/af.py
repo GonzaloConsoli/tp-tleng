@@ -97,3 +97,7 @@ class AF(ABC):
     def _print_transitions(self, state: Hashable) -> dict[Hashable, str]:
         """Imprime las transiciones de un estado para cada símbolo."""
         pass
+
+    @abstractmethod
+    def matches(self, string: str) -> bool:
+        pass
