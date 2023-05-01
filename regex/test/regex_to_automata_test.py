@@ -1,5 +1,5 @@
 from automata.afnd import AFND, SpecialSymbol
-from automata.helpers import get_concat_automata, get_star_automata, get_union_automata
+from automata.helpers import get_concat_automata, get_star_automata, get_union_automata,get_plus_automata
 from regex import Char, Concat, Empty, Lambda, Plus, Star, Union, RegEx
 from regex.helpers import regex_to_automata
 
@@ -58,3 +58,17 @@ def test_star_a():
     aut_a = get_char_automata("a")
     aut_a_star = get_star_automata(aut_a)
     assert str(res) == str(aut_a_star)
+
+def test_plus_a():
+    res = regex_to_automata(Plus(Char("a")))
+    aut_a = get_char_automata("a")
+    aut_a_plus = get_plus_automata(aut_a)
+    assert str(res) == str(aut_a_plus)
+
+def test_plus_concat():
+    res = regex_to_automata(Plus(Concat(Char("a"), Char("b"))))
+    aut_a = get_char_automata("a")
+    aut_b = get_char_automata("b")
+    aut_concat = get_concat_automata(aut_a, aut_b)
+    aut_concat_plus = get_plus_automata(aut_concat)
+    assert str(res) == str(aut_concat_plus)
