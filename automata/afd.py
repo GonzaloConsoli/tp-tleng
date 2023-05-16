@@ -38,6 +38,7 @@ class AFD(AF):
             else:
                 transitions[char] = "-"
         return transitions
+        
 
     def matches(self, string: str) -> bool:
         q = self.initial_state
@@ -46,3 +47,7 @@ class AFD(AF):
             if q == {}:
                 return False
         return q in self.final_states
+
+    def minimize(self):
+        pass 
+
