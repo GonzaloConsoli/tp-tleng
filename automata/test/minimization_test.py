@@ -41,4 +41,4 @@ def test_minimization():
     expected_min.add_transition(4, 4, "b")
     expected_min.mark_initial_state(1)
 
-    assert obtained_min == expected_min
+    assert obtained_min == expected_min # TODO: equality (check if both accepts same language)
