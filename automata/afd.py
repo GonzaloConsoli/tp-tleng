@@ -48,11 +48,13 @@ class AFD(AF):
                 return False
         return q in self.final_states
 
-    def minimize(self):
+    def minimize(self):      
+        self._complete()
         alphabet = self._get_extended_alphabet()
         equivalence_classes = self._get_initial_equivalence_classes()
         new_equivalence_classes = []
         table = {}
+
         while set(equivalence_classes) != set(new_equivalence_classes):
             if len(new_equivalence_classes) != 0:
                 equivalence_classes = new_equivalence_classes
@@ -60,7 +62,7 @@ class AFD(AF):
 
             table = self._build_transitions_table(alphabet, equivalence_classes)
             for state in self.states:
-                self._find_new_equivalence_class(new_equivalence_classes, table, state)
+                self._find_new_equivalence_class(equivalence_classes, new_equivalence_classes, table, state)
             self.rename_classes(equivalence_classes)
             self.rename_classes(new_equivalence_classes)
 
@@ -111,14 +113,19 @@ class AFD(AF):
             table[state] = {}
             for symbol in alphabet:
                 next = self.transitions.get(state, {}).get(symbol, {})
-                if next == {}:
-                    continue
                 equivalence_class = self._find_equivalence_class(equivalence_classes, next)
                 table[state][symbol] = equivalence_class
         return table
 
-    def _find_new_equivalence_class(self, new_equivalence_classes, table, state):          
-        new_class_id = ""
+    def _find_new_equivalence_class(self, equivalence_classes, new_equivalence_classes, table, state):
+        current_equivalence_class = None
+        for equivalence_class in equivalence_classes:
+            if state in equivalence_class._states:
+                current_equivalence_class = equivalence_class
+                break
+
+        new_class_id = current_equivalence_class._id
+
         for symbol in table[state]:
             new_class_id = new_class_id + "-" + table[state][symbol]._id
             
@@ -141,7 +148,16 @@ class AFD(AF):
                 break
             
         return equivalence_class
-                
+            
+    def _complete(self):
+        self.add_state("t")
+        for symbol in self.alphabet:
+            self.add_transition("t", "t", symbol)
+        for state in self.transitions:
+            for symbol in self.alphabet:
+                if not symbol in self.transitions[state]:
+                    self.add_transition(state, "t", symbol)
+
 
 class EquivalenceClass:
     def __init__(self, states, id) -> None:
