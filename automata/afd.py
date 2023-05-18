@@ -52,21 +52,25 @@ class AFD(AF):
         alphabet = self._get_extended_alphabet()
         equivalence_classes = self._get_initial_equivalence_classes()
         new_equivalence_classes = []
-        i = 0
         table = {}
-        # TODO: Iteration 0 is OK, Iteration 1 fails on q1
-        while equivalence_classes != new_equivalence_classes:
-            print("Iteration " + str(i))
+        while set(equivalence_classes) != set(new_equivalence_classes):
             if len(new_equivalence_classes) != 0:
                 equivalence_classes = new_equivalence_classes
+                new_equivalence_classes = []
 
             table = self._build_transitions_table(alphabet, equivalence_classes)
-            print(table)
             for state in self.states:
                 self._find_new_equivalence_class(new_equivalence_classes, table, state)
-            i = i+1
+            self.rename_classes(equivalence_classes)
+            self.rename_classes(new_equivalence_classes)
 
         return self._build_minimized_automata(new_equivalence_classes)
+
+    def rename_classes(self, equivalence_classes):
+        name = "I"
+        for ec in equivalence_classes:
+            ec._id = name
+            name = name + "I"
 
     def _build_minimized_automata(self, new_equivalence_classes):
         minimized = AFD()
@@ -103,10 +107,12 @@ class AFD(AF):
                 table[state][symbol] = equivalence_class
         return table
 
-    def _find_new_equivalence_class(self, new_equivalence_classes, table, state):
-        new_class = EquivalenceClass(set(), "")
+    def _find_new_equivalence_class(self, new_equivalence_classes, table, state):          
+        new_class_id = ""
         for symbol in table[state]:
-            new_class = new_class.combine(table[state][symbol])
+            new_class_id = new_class_id + "-" + table[state][symbol]._id
+            
+        new_class = EquivalenceClass(set([state]), new_class_id)
 
         added = False     
         for i in range(0, len(new_equivalence_classes)):
@@ -132,12 +138,6 @@ class EquivalenceClass:
         self._id = id
         self._states = states
 
-    def combine(self, other):
-        self_states = self._states
-        other_states = other._states
-
-        return EquivalenceClass(self_states | other_states, self._id + "-" + other._id)
-
     def add_state(self, state):
         self._states.add(state)
     
@@ -149,8 +149,9 @@ class EquivalenceClass:
     
     def __str__(self) -> str:
         return self._id
-        # return self._states.__str__()
     
     def __repr__(self) -> str:
-        # return self._states.__repr__()
         return self._id
+    
+    def __hash__(self) -> int:
+        return frozenset(self._states).__hash__()
