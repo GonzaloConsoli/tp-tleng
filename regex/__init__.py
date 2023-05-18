@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
-
-from automata import AFND
-from automata.afnd import SpecialSymbol
-from regex.helpers import regex_to_automata
-
+from automata.helpers import (
+    get_concat_automata,
+    get_plus_automata,
+    get_star_automata,
+    get_union_automata,
+)
+from automata.afnd import AFND, SpecialSymbol
 
 __all__ = [
     "RegEx",
@@ -18,6 +20,9 @@ __all__ = [
 
 
 class RegEx(ABC):
+    def __init__(self):
+        self._min_afd = None
+
     """Clase abstracta para representar expresiones regulares."""
 
     @abstractmethod
@@ -65,6 +70,9 @@ class RegEx(ABC):
 class Empty(RegEx):
     """Expresión regular que denota el lenguaje vacío (∅)."""
 
+    def __init__(self):
+        super().__init__()
+
     def naive_match(self, word: str):
         return False
 
@@ -91,6 +99,9 @@ class Empty(RegEx):
 
 class Lambda(RegEx):
     """Expresión regular que denota el lenguaje de la cadena vacía (Λ)."""
+
+    def __init__(self):
+        super().__init__()
 
     def naive_match(self, word: str):
         return word == ""
@@ -120,6 +131,7 @@ class Char(RegEx):
     """Expresión regular que denota el lenguaje de un determinado carácter."""
 
     def __init__(self, char: str | None):
+        super().__init__()
         assert len(char) == 1
         self.char = char
 
@@ -153,6 +165,7 @@ class Concat(RegEx):
     """Expresión regular que denota la concatenación de dos expresiones regulares."""
 
     def __init__(self, exp1: RegEx, exp2: RegEx):
+        super().__init__()
         self.exp1 = exp1
         self.exp2 = exp2
 
@@ -199,8 +212,9 @@ class Concat(RegEx):
 
 class Union(RegEx):
     """Expresión regular que denota la unión de dos expresiones regulares."""
-
+        
     def __init__(self, exp1: RegEx, exp2: RegEx):
+        super().__init__()
         self.exp1 = exp1
         self.exp2 = exp2
 
@@ -240,6 +254,7 @@ class Star(RegEx):
     """Expresión regular que denota la clausura de Kleene de otra expresión regular."""
 
     def __init__(self, exp: RegEx):
+        super().__init__()
         self.exp = exp
 
     def naive_match(self, word: str):
@@ -267,6 +282,7 @@ class Plus(RegEx):
     """Expresión regular que denota la clausura positiva de otra expresión regular."""
 
     def __init__(self, exp: RegEx):
+        super().__init__()
         self.exp = exp
 
     def naive_match(self, word: str):
@@ -291,3 +307,50 @@ class Plus(RegEx):
             return Lambda()
         else:
             return Empty()
+
+def regex_to_automata(regex: RegEx) -> AFND:
+    if isinstance(regex, Empty):
+        automata = AFND()
+        automata.add_state("q0")
+        automata.mark_initial_state("q0")
+        return automata
+
+    if isinstance(regex, Lambda):
+        automata = AFND()
+        automata.add_state(0)
+        automata.add_state(1, final=True)
+        automata.add_transition(0, 1, SpecialSymbol.Lambda)
+        automata.mark_initial_state(0)
+        automata.normalize_states()
+        return automata
+
+    elif isinstance(regex, Char):
+        automata = AFND()
+        automata.add_state(0)
+        automata.add_state(1, final=True)
+        automata.add_transition(0, 1, str(regex))
+        automata.mark_initial_state(0)
+        automata.normalize_states()
+        return automata
+
+    elif isinstance(regex, Union):
+        automata1 = regex_to_automata(regex.exp1)
+        automata2 = regex_to_automata(regex.exp2)
+        automata = get_union_automata(automata1, automata2)
+        return automata
+
+    elif isinstance(regex, Concat):
+        automata1 = regex_to_automata(regex.exp1)
+        automata2 = regex_to_automata(regex.exp2)
+        automata = get_concat_automata(automata1, automata2)
+        return automata
+
+    elif isinstance(regex, Star):
+        automata1 = regex_to_automata(regex.exp)
+        automata = get_star_automata(automata1)
+        return automata
+
+    elif isinstance(regex, Plus):
+        automata1 = regex_to_automata(regex.exp)
+        automata = get_plus_automata(automata1)
+        return automata
