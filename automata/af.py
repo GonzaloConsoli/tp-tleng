@@ -35,12 +35,11 @@ class AF(ABC):
             raise ValueError(f"El estado {state} no pertenece al autómata.")
         self.initial_state = state
 
-    def normalize_states(self, append_str=""):
+    def normalize_states(self, append_str = ""):
         """
         Normaliza los nombres de los estados según la convención q0, q1, q2, ...
 
         Modifica el autómata (no crea una copia) y devuelve el autómata modificado.
-        append_str: cadena que se agrega al final de cada nombre de estado para hacer operaciones entre automatas.
         """
         new_names = {}
         if self.initial_state is not None:
@@ -49,8 +48,32 @@ class AF(ABC):
             if state not in new_names:
                 new_names[state] = f"q{i + 1}" + append_str
 
-        for old_name, new_name in new_names.items():
+        # Ordenamos los estados para hacer el renombre sin pisar ninguno
+        ordered_new_names = []
+        while len(new_names) > 0:
+            for old_name, new_name in new_names.items():
+                if old_name == new_name or new_name not in new_names.keys():
+                    ordered_new_names.append([old_name, new_name, False])
+                    del new_names[old_name]
+                    break
+            else:
+                # Detectamos un loop entre las operaciones de renombre
+                # Hay que usar un nombre temporal
+                old_name, new_name = next(iter(new_names.items()))
+                ordered_new_names.append([old_name, new_name, True])
+                del new_names[old_name]
+
+        # Realizamos el renombre
+        for old_name, new_name, use_temp in ordered_new_names:
+            if use_temp:
+                while new_name in self.states:
+                    new_name = f"temp:{new_name}"
             self._rename_state(old_name, new_name)
+
+        # Eliminamos los nombres temporales
+        for state in self.states:
+            if state.startswith("temp:"):
+                self._rename_state(state, state.split(":")[-1])
 
         return self
 
@@ -79,7 +102,7 @@ class AF(ABC):
             if old_name == self.initial_state:
                 self.initial_state = new_name
             if old_name in self.final_states:
-                self.final_states.remove(old_name)
+                self.final_states.remove(old_name)  
                 self.final_states.add(new_name)
             self._rename_state_in_transitions(old_name, new_name)
 
