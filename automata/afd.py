@@ -111,6 +111,8 @@ class AFD(AF):
             table[state] = {}
             for symbol in alphabet:
                 next = self.transitions.get(state, {}).get(symbol, {})
+                if next == {}:
+                    continue
                 equivalence_class = self._find_equivalence_class(equivalence_classes, next)
                 table[state][symbol] = equivalence_class
         return table
