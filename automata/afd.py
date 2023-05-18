@@ -64,7 +64,7 @@ class AFD(AF):
             self.rename_classes(equivalence_classes)
             self.rename_classes(new_equivalence_classes)
 
-        return self._build_minimized_automata(new_equivalence_classes)
+        return self._build_minimized_automata(new_equivalence_classes, table)
 
     def rename_classes(self, equivalence_classes):
         name = "I"
@@ -72,7 +72,7 @@ class AFD(AF):
             ec._id = name
             name = name + "I"
 
-    def _build_minimized_automata(self, new_equivalence_classes):
+    def _build_minimized_automata(self, new_equivalence_classes, table):
         minimized = AFD()
         for i in range(0, len(new_equivalence_classes)):
             is_final = False
@@ -86,8 +86,16 @@ class AFD(AF):
             is_initial = self.initial_state in new_equivalence_classes[i]._states
             if is_initial:
                 minimized.mark_initial_state(i)
-            
-        # TODO: add transitions
+
+        for state in table:
+            for symbol in table[state]:
+                target_equivalence_class = table[state][symbol]
+                source_equivalence_class = None
+                for equivalence_class in new_equivalence_classes:
+                    if state in equivalence_class._states:
+                        source_equivalence_class = equivalence_class
+                        break
+                minimized.add_transition(source_equivalence_class.index(), target_equivalence_class.index(), symbol)
 
         return minimized
 
@@ -143,6 +151,9 @@ class EquivalenceClass:
     
     def has_state(self, state):
         return state in self._states
+    
+    def index(self):
+        return len(self._id)-1
 
     def __eq__(self, __value: object) -> bool:
         return self._id == __value._id
