@@ -1,7 +1,6 @@
 from automata.afnd import AFND, SpecialSymbol
 from automata.helpers import get_concat_automata, get_star_automata, get_union_automata,get_plus_automata
-from regex import Char, Concat, Empty, Lambda, Plus, Star, Union, RegEx
-from regex.helpers import regex_to_automata
+from regex import Char, Concat, Empty, Lambda, Plus, Star, Union, RegEx, regex_to_automata
 
 
 def get_char_automata(char: str) -> AFND:
@@ -23,6 +22,11 @@ def test_lambda_str():
     lambda_automata.mark_initial_state(0)
     lambda_automata.normalize_states()
     assert str(res) == str(lambda_automata)
+
+def test_empty():
+    afnd = regex_to_automata(Empty())
+    afd = afnd.to_afd()
+    assert not afd.matches('a')
 
 
 def test_chr_a_str():

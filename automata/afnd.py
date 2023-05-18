@@ -142,9 +142,10 @@ class AFND(AF):
 
         # Adding transitions
         for qi in dstates:
-            for a, qj in dtran[qi].items():
-                if qj:
-                    afd.add_transition(qi, qj, a)
+            if dtran.get(qi):
+                for a, qj in dtran[qi].items():
+                    if qj:
+                        afd.add_transition(qi, qj, a)
 
         afd.normalize_states()
         return afd
