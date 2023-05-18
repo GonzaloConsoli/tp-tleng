@@ -317,9 +317,7 @@ def regex_to_automata(regex: RegEx) -> AFND:
 
     if isinstance(regex, Lambda):
         automata = AFND()
-        automata.add_state(0)
-        automata.add_state(1, final=True)
-        automata.add_transition(0, 1, SpecialSymbol.Lambda)
+        automata.add_state(0, final=True)
         automata.mark_initial_state(0)
         automata.normalize_states()
         return automata
