@@ -46,20 +46,6 @@ class RegEx(ABC):
         """
         pass
 
-    @abstractmethod
-    def get_alphabet(self) -> set:
-        """
-        Retorna el alfabeto asociado a una expresion regular
-        """
-        pass
-
-    def derive(self, char):
-        """
-        Retorna la derivada de la expresion regular respecto de un simbolo
-        """
-        if (len(char) > 1):
-            raise ValueError("Se debe derivar respecto a solo un caracter")
-
     @abstractmethod   
     def epsilon(self):
         """
@@ -82,17 +68,6 @@ class Empty(RegEx):
     def __str__(self):
         return "∅"
     
-    def get_alphabet(self) -> set:
-        return set()
-    
-    def derive(self, char):
-        super().derive(char)
-
-        return self
-    
-    def __eq__(self, __value: object) -> bool:
-        return isinstance(self, __value.__class__)
-    
     def epsilon(self):
         return Empty()
 
@@ -111,17 +86,6 @@ class Lambda(RegEx):
 
     def __str__(self):
         return "λ"
-    
-    def get_alphabet(self) -> set:
-        return set([SpecialSymbol.Lambda])
-    
-    def derive(self, char):
-        super().derive(char)
-
-        return Empty()
-
-    def __eq__(self, __value: object) -> bool:
-        return isinstance(self, __value.__class__)
     
     def epsilon(self):
         return Lambda()
@@ -143,23 +107,9 @@ class Char(RegEx):
 
     def __str__(self):
         return self.char
-
-    def get_alphabet(self) -> set:
-        return set(self.char)
-    
-    def derive(self, char):
-        super().derive(char)
-
-        if char == self.char:
-            return Lambda()
-        else:
-            return Empty()
         
     def epsilon(self):
         return Empty()
-    
-    def __eq__(self, __value: object) -> bool:
-        return isinstance(self, __value.__class__) and self.char == __value.char
 
 class Concat(RegEx):
     """Expresión regular que denota la concatenación de dos expresiones regulares."""
@@ -181,32 +131,9 @@ class Concat(RegEx):
     def __str__(self):
         return f"{f'({self.exp1})' if not self.exp1._atomic() else self.exp1}" \
             f"{f'({self.exp2})' if not self.exp2._atomic() else self.exp2}"
-    
-    def get_alphabet(self) -> set:
-        return set.union(self.exp1.get_alphabet(), self.exp2.get_alphabet())
-    
-    def derive(self, char):
-        super().derive(char)
-
-        return Union(Concat(self.exp1.derive(char), self.exp2), Concat(self.exp1.epsilon(), self.exp2.derive(char)))
 
     def epsilon(self):
         return Empty()
-    
-    #TODO: Refactor
-    def __eq__(self, __value: object) -> bool:
- 
-        if isinstance(__value, Concat):
-            return self.exp1 == __value.exp1 and self.exp2 == __value.exp2
-        elif isinstance(__value, Char):
-            return self.exp1 == __value and self.exp2 == Lambda() or self.exp1 == Lambda() and self.exp2 == __value
-        elif isinstance(__value, Lambda):
-            return self.exp1 == __value and self.exp2 == __value
-        elif isinstance(__value, Empty):
-            return self.exp1 == __value or self.exp2 == __value
-        elif isinstance(__value, Union):
-            if (__value.exp1 == self and __value.exp2 == Empty()) or (__value.exp2 == self and __value.exp1 == Empty()):
-                return True
         
 
 
@@ -228,27 +155,11 @@ class Union(RegEx):
         return f"{f'({self.exp1})' if not self.exp1._atomic() else self.exp1}" \
             f"|{f'({self.exp2})' if not self.exp2._atomic() else self.exp2}"
     
-    def get_alphabet(self) -> set:
-        return set.union(self.exp1.get_alphabet(), self.exp2.get_alphabet())
-    
     def epsilon(self):
         if self.exp1.epsilon() == Lambda() or self.exp2.epsilon() == Lambda():
             return Lambda()
         else:
             return Empty()
-    #TODO: Refactor
-    def __eq__(self, __value: object) -> bool:
-        if isinstance(__value, Union):
-            return self.exp1 == __value.exp1 and self.exp2 == __value.exp2 or self.exp1 == __value.exp2 and self.exp2 == __value.exp1
-        elif isinstance(__value, Char):
-            return (self.exp1 == __value and self.exp2 == Empty()) or (self.exp1 == Empty() and self.exp2 == __value) or (self.exp1 == __value and self.exp2 == __value)
-        elif isinstance(__value, Lambda):
-            return (self.exp1 == __value and self.exp2 == __value) or (self.exp1 == __value and self.exp2 == Empty()) or (self.exp1 == Empty() and self.exp2 == __value)
-        elif isinstance(__value, Empty):
-            return self.exp1 == __value and self.exp2 == __value
-        #está asi para que pase el test
-        elif isinstance(__value, Concat):
-            return __value == self.exp1
 
 class Star(RegEx):
     """Expresión regular que denota la clausura de Kleene de otra expresión regular."""
@@ -270,9 +181,6 @@ class Star(RegEx):
 
     def __str__(self):
         return f"({self.exp})*" if not self.exp._atomic() else f"{self.exp}*"
-    
-    def get_alphabet(self) -> set:
-        return self.exp.get_alphabet()
 
     def epsilon(self):
         return Lambda()
@@ -298,9 +206,6 @@ class Plus(RegEx):
 
     def __str__(self):
         return f"({self.exp})+" if not self.exp._atomic() else f"{self.exp}+"
-    
-    def get_alphabet(self) -> set:
-        return self.exp.get_alphabet()
 
     def epsilon(self):
         if self.exp.epsilon() == Lambda():
