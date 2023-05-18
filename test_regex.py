@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-from os.path import dirname, basename, isfile, join
+from os.path import dirname, basename, join
 import glob
 import optparse
-import sys
 import importlib
 import subprocess
 from timeit import default_timer as timer

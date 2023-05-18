@@ -155,7 +155,7 @@ class AFD(AF):
             self.add_transition("t", "t", symbol)
         for state in self.transitions:
             for symbol in self.alphabet:
-                if not symbol in self.transitions[state]:
+                if symbol not in self.transitions[state]:
                     self.add_transition(state, "t", symbol)
 
 

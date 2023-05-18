@@ -1,6 +1,6 @@
-from automata.afnd import AFND, SpecialSymbol
-from automata.helpers import get_concat_automata, get_star_automata, get_union_automata,get_plus_automata
-from regex import Char, Concat, Empty, Lambda, Plus, Star, Union, RegEx, regex_to_automata
+from automata.afnd import AFND
+from automata.helpers import get_concat_automata, get_union_automata,get_plus_automata
+from regex import Char, Concat, Lambda, Plus, Star, regex_to_automata
 
 
 def get_char_automata(char: str) -> AFND:

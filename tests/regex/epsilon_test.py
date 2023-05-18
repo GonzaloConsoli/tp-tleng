@@ -1,4 +1,3 @@
-from automata.afnd import SpecialSymbol
 from regex import Char, Concat, Empty, Lambda, Plus, Star, Union
 
 class TestEpsilon:

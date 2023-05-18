@@ -5,7 +5,7 @@ from automata.helpers import (
     get_star_automata,
     get_union_automata,
 )
-from automata.afnd import AFND, SpecialSymbol
+from automata.afnd import AFND
 
 __all__ = [
     "RegEx",

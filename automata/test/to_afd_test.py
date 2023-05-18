@@ -1,6 +1,5 @@
 from automata.afnd import AFND
 from automata.afnd import SpecialSymbol
-from regex import Empty
 
 
 def test_to_afd():
