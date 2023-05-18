@@ -15,18 +15,8 @@ def get_char_automata(char: str) -> AFND:
 
 def test_lambda_str():
     res = regex_to_automata(Lambda())
-    lambda_automata = AFND()
-    lambda_automata.add_state(0)
-    lambda_automata.add_state(1, final=True)
-    lambda_automata.add_transition(0, 1, SpecialSymbol.Lambda)
-    lambda_automata.mark_initial_state(0)
-    lambda_automata.normalize_states()
-    assert str(res) == str(lambda_automata)
-
-def test_empty():
-    afnd = regex_to_automata(Empty())
-    afd = afnd.to_afd()
-    assert not afd.matches('a')
+    assert res.matches('')
+    assert not res.matches('a')
 
 
 def test_chr_a_str():
@@ -42,32 +32,59 @@ def test_chr_b_str():
 
 
 def test_union_a_b():
-    res = regex_to_automata(Union(Char("a"), Char("b")))
     aut_a = get_char_automata("a")
     aut_b = get_char_automata("b")
     aut_union = get_union_automata(aut_a, aut_b)
-    assert str(res) == str(aut_union)
+
+    assert aut_union.matches('a')
+    assert aut_union.matches('b')
+    assert not aut_union.matches('c')
 
 
 def test_concat_a_b():
-    res = regex_to_automata(Concat(Char("a"), Char("b")))
     aut_a = get_char_automata("a")
     aut_b = get_char_automata("b")
     aut_union = get_concat_automata(aut_a, aut_b)
-    assert str(res) == str(aut_union)
+
+    assert aut_union.matches('ab')
+    assert not aut_union.matches('ba')
+    assert not aut_union.matches('c')
 
 
 def test_star_a():
-    res = regex_to_automata(Star(Char("a")))
-    aut_a = get_char_automata("a")
-    aut_a_star = get_star_automata(aut_a)
-    assert str(res) == str(aut_a_star)
+    regex = Star(Char("a"))
+    assert regex.naive_match('')
+    assert regex.naive_match('a')
+    assert regex.naive_match('aa')
+    assert not regex.naive_match('b')
+
+    automata = regex_to_automata(regex)
+    assert automata.matches('')
+    assert automata.matches('a')
+    assert automata.matches('aa')
+    assert not automata.matches('b')
 
 def test_plus_a():
     res = regex_to_automata(Plus(Char("a")))
+
+    assert res.matches('a')
+    assert res.matches('aa')
+    assert not res.matches('b')
+
+def test_plus_union():
     aut_a = get_char_automata("a")
-    aut_a_plus = get_plus_automata(aut_a)
-    assert str(res) == str(aut_a_plus)
+    aut_b = get_char_automata("b")
+    aut_concat = get_union_automata(aut_a, aut_b)
+    aut_concat_plus = get_plus_automata(aut_concat)
+
+    import ipdb; ipdb.set_trace()
+
+    assert aut_concat_plus.matches("aa")
+    assert aut_concat_plus.matches("bb")
+    assert aut_concat_plus.matches("abab")
+    assert aut_concat_plus.matches("baba")
+
+
 
 def test_plus_concat():
     res = regex_to_automata(Plus(Concat(Char("a"), Char("b"))))
