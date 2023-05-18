@@ -27,5 +27,6 @@ def test_minimization():
     assert not aut1.matches("babababababababa")
 
     min = aut1.minimize()
+    assert len(min.states) <= len(aut1.states)
     assert min.matches("bababababaaabababababa")
     assert not min.matches("babababababababa")
