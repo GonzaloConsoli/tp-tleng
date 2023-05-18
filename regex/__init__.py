@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from automata import AFND
 from automata.afnd import SpecialSymbol
+from regex.helpers import regex_to_automata
 
 
 __all__ = [
@@ -28,8 +29,9 @@ class RegEx(ABC):
         pass
 
     def match(self, word: str) -> bool:
-        """Indica si la expresión regular acepta la cadena dada."""
-        raise NotImplementedError
+        if (self._min_afd is None):
+            self._min_afd = regex_to_automata(self).to_afd().minimize()
+        return self._min_afd.matches(word)
 
     @abstractmethod
     def _atomic(self) -> bool:
