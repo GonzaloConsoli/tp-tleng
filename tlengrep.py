@@ -7,7 +7,7 @@ from regex_parser import parse_regex
 
 usage = "%prog [regex] [file]"
 
-opt_parser = optparse.OptionParser(usage=usage, )
+opt_parser = optparse.OptionParser(usage=usage)
 opt_parser.add_option("-m", "--module", dest="module", action="store_true",
                       help="read the regular expression from a Python module")
 opt_parser.add_option("-n", "--naive", dest="naive", action="store_true",
@@ -31,9 +31,9 @@ else:
     with open(args[1]) if len(args) == 2 else sys.stdin as input_file:
         for line in input_file:
             if opts.naive:
-                matched = regex.naive_match(line.strip())
+                matched = regex.naive_match(line.strip("\n"))
             else:
-                matched = regex.match(line.strip())
+                matched = regex.match(line.strip("\n"))
 
             if matched:
                 print(line, end="")

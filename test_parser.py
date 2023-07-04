@@ -8,7 +8,7 @@ import subprocess
 from timeit import default_timer as timer
 
 from tests.utils import bold, red, green, yellow, gray, print_diff
-
+from tests.parser import test_cases
 
 usage = "%prog [program_to_test]"
 
@@ -17,31 +17,29 @@ _, args = opt_parser.parse_args()
 
 timeout = 1  # segundos
 
+
 if len(args) > 0:
-    cases = [
-        basename(filename)[:-3]
-        for filename in
-        glob.glob(join(dirname(__file__), "tests/regex/modules/*.py"))
-    ]
-    cases.sort()
     input_file = join(dirname(__file__), "tests/input/strings.txt")
     results = []
 
-    print(f"Testing {bold((' ').join(args))} ({len(cases)} test cases)")
+    print(f"Testing {bold((' ').join(args))} ({len(test_cases)} test cases)")
 
-    for case in cases:
-        regex_module = importlib.import_module(f"tests.regex.modules.{case}")
-        regex = regex_module.__regex__
-        print(f"\n{gray(f'[{case}]')} Testing regex {yellow(regex)}...")
+    for i in range(len(test_cases)):
+        [test_string, expected_output] = test_cases[i]
+        print(
+            f"\n{gray(f'[{i}]')} Testing string \"{yellow(test_string)}\"...")
+
+        expected_output = False if expected_output == False else "".join(
+            map(lambda x: x + '\n', expected_output))
 
         try:
-            # output is in files at tests/regex/output/*.txt
-            with open(join(dirname(__file__), f"tests/regex/output/{case}.txt")) as f:
-                expected_output = f.read()
             # timeit
             start = timer()
+
             actual_output = subprocess.check_output(
-                [*args, "-m", f"tests.regex.modules.{case}", input_file],
+                [*args, test_string, '--', input_file]
+                if test_string.startswith('--')
+                else [*args, test_string, input_file],
                 stderr=subprocess.STDOUT,
                 timeout=timeout
             ).decode('utf-8')
@@ -52,6 +50,11 @@ if len(args) > 0:
             # para que los tests funcionen en ambas plataformas
             actual_output = actual_output.replace("\r\n", "\n")
 
+            if expected_output == False:
+                print(
+                    f"  {red('ERROR:')} Parsing error expected {gray(f'({time})')}")
+                results.append(False)
+                continue
             if actual_output == expected_output:
                 print(
                     f"  {green('OK')} {gray(f'({len(actual_output.splitlines())} matches, {time})')}")
@@ -65,9 +68,15 @@ if len(args) > 0:
             results.append(False)
             continue
         except subprocess.CalledProcessError as e:
-            print(f"  {red('ERROR:')} {e.output.decode('utf-8')}")
-            results.append(False)
-            continue
+            if (expected_output == False):
+                print(
+                    f"  {green('OK')} {gray(f'(Parsing error, {time})')}")
+                results.append(True)
+                continue
+            else:
+                print(f"  {red('ERROR:')} {e.output.decode('utf-8')}")
+                results.append(False)
+                continue
 
     if all(results):
         print(f"\n{bold(green(f'All {len(results)} tests passed'))}")
