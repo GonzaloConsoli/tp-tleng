@@ -1,5 +1,5 @@
 from regex import RegEx
-from our_parser import parse
+from .our_parser import parse
 
 __all__ = ["parse_regex"]
 
