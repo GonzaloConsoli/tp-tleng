@@ -19,7 +19,8 @@ tokens = [
     'SB_OPEN',
     'SB_CLOSE',
     'BACKSLASH',
-    'MINUS'
+    'MINUS',
+    'COMMA'
 ]
 
 # Reglas para el analizador léxico
@@ -40,6 +41,7 @@ t_SB_OPEN = r'\['
 t_SB_CLOSE = r'\]'
 t_BACKSLASH = r'\\'
 t_MINUS = r'\-'
+t_COMMA = r','
 
 
 # Ignoramos saltos de línea y llevamos registro del número de línea actual

@@ -1,5 +1,5 @@
 from ply.yacc import yacc
-from regex import Union, Concat, Star, Plus, Lambda
+from regex import Union, Concat, Star, Plus, Lambda, Char
 
 precedence = (
         # ('left', 'IF', 'THEN', 'ELSE'),
@@ -46,6 +46,38 @@ def p_optional_regex(p):
     regex : regex QUESTION
     '''
     p[0] = Union(p[1], Lambda())
+
+def p_simple_cuantifier(p):
+    '''
+    regex : regex CB_OPEN NUM CB_CLOSE
+    '''
+    base = p[1]
+    appearances = p[3]
+    current = Lambda()
+    while (appearances > 0):
+        current = Concat(current, base)
+    p[0] = current
+
+def p_double_cuantifier(p):
+    '''
+    regex : regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    '''
+    base = p[1]
+    min = p[3]
+    max = p[5]
+    current = Lambda()
+    for i in range(0, max):
+        if i < min:
+            current = Concat(current, base)
+        else:
+            current = Union(current, Concat(current, base))
+    p[0] = current
+
+def p_char(p):
+    '''
+    regex : CHAR
+    '''
+    p[0] = Char(p[1])
 
 
 # Manejo de errores
