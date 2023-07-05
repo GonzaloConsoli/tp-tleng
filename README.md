@@ -7,19 +7,17 @@
 La siguientes producciones corresponden a la gramática elegida. El símbolo distinguido es R y están escritas de modo tal que pueden utilizarse directamente en https://mdaines.github.io/grammophone para su análisis
 
 ```
-R -> B .
-R -> U .
+R -> R "|" R .
+R -> R R .
+R -> R "*" .
+R -> R "+" .
+R -> R "?" .
+R -> R "{" num "}" .
+R -> R "{" num "," num "}" .
 R -> char .
 R -> C .
 R -> "(" R ")" .
 R -> "(" ")" .
-B -> R "|" R .
-B -> R R .
-U -> R "*" .
-U -> R "+" .
-U -> R "?" .
-U -> R "{" num "}" .
-U -> R "{" num "," num "}" .
 C -> "[" X "]" .
 C -> "/" "char" .
 X -> char .
@@ -30,19 +28,17 @@ X -> char "-" char X .
 
 Una breve explicación de cada una:
 
-1. R -> B: Una expresión regular puede ser un operador binario
-1. R -> U: Una expresión regular puede ser un operador unario
+1. R -> R "|" R: Una expresión regular puede ser una union
+1. R -> R R : Una expresión regular puede ser una concatenación
+1. R -> R "\*": Una expresión regular puede ser la clausura de Kleene
+1. R -> R "+": Una expresión regular puede ser la clausura positiva
+1. R -> R "?": Una expresión regular puede ser el opcional
+1. R -> R "{" num "}" : Una expresión regular puede ser el cuantificador simple
+1. R -> R "{" num "," num "}": Una expresión regular puede ser el cuantificador doble
 1. R -> char: Una expresión regular puede ser un caracter
 1. R -> C: Una expresión regular puede ser una clase de caracteres
 1. R -> "(" R ")" : Una expresión regular puede ser una expresión regular entre paréntesis
 1. R -> "(" ")": Una expresión regular puede ser lambda entre paréntesis
-1. B -> R "|" R: Un operador binario es la unión
-1. B -> R R: Un operador binario es la concatenación
-1. U -> R "\*": Un operador unario es la clausura de Kleene
-1. U -> R "+": Un operador unario es la clausura positiva
-1. U -> R "?": Un operador unario es el opcional
-1. U -> R "{" num "}" : Un operador unario es el cuantificador simple
-1. U -> R "{" num "," num "}": Un operador unario es el cuantificador doble
 1. C -> "[" X "]": Una clase de caracteres comienza con [, termina con ] y posee un contenido X
 1. C -> "/" "char": Una clase de caracteres especial es /d y otra /w (deberian ser \d y \w)
 1. X -> char: El contenido de una clase de caracteres puede ser un caracter
