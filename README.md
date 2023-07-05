@@ -17,9 +17,8 @@ R -> R "{" num "," num "}" .
 R -> char .
 R -> "(" R ")" .
 R -> "(" ")" .
-R -> C .
-C -> "[" X "]" .
-C -> "/" "char" .
+R -> "/" "char" .
+R -> "[" X "]" .
 X -> char .
 X -> char "-" char .
 X -> char X .
@@ -38,9 +37,8 @@ Una breve explicación de cada una:
 1. R -> char: Una expresión regular puede ser un caracter
 1. R -> "(" R ")" : Una expresión regular puede ser una expresión regular entre paréntesis
 1. R -> "(" ")": Una expresión regular puede ser lambda entre paréntesis
-1. R -> C: Una expresión regular puede ser una clase de caracteres
-1. C -> "[" X "]": Una clase de caracteres comienza con [, termina con ] y posee un contenido X
-1. C -> "/" "char": Una clase de caracteres especial es /d y otra /w (deberian ser \d y \w)
+1. R -> "/" "char": Una expresión regular puede ser una clase de caracteres especial de la pinta /char: /d o bien /w (deberian ser \d y \w)
+1. C -> "[" X "]": Una expresión regular puede ser una clase de caracteres que comienza con [, termina con ] y posee un contenido X
 1. X -> char: El contenido de una clase de caracteres puede ser un caracter
 1. X -> char - char: El contenido de una clase de caracteres puede ser un rango de caracteres
 1. X -> char X: El contenido de una clase de caracteres puede ser un caracter seguido de más contenido
