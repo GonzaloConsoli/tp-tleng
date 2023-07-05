@@ -105,7 +105,7 @@ class ParseError(Exception):
     pass
 
 
-parser = yacc()
+# parser = yacc()
 
 def parse(string):
     return parser.parse(string)

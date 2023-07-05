@@ -77,8 +77,6 @@ def test_plus_union():
     aut_concat = get_union_automata(aut_a, aut_b)
     aut_concat_plus = get_plus_automata(aut_concat)
 
-    import ipdb; ipdb.set_trace()
-
     assert aut_concat_plus.matches("aa")
     assert aut_concat_plus.matches("bb")
     assert aut_concat_plus.matches("abab")
