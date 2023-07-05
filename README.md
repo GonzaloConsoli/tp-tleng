@@ -21,8 +21,7 @@ U -> R "?" .
 U -> R "{" num "}" .
 U -> R "{" num "," num "}" .
 C -> "[" X "]" .
-C -> "/" "d" .
-C -> "/" "w" .
+C -> "/" "char" .
 X -> char .
 X -> char "-" char .
 X -> char X .
@@ -45,8 +44,7 @@ Una breve explicación de cada una:
 1. U -> R "{" num "}" : Un operador unario es el cuantificador simple
 1. U -> R "{" num "," num "}": Un operador unario es el cuantificador doble
 1. C -> "[" X "]": Una clase de caracteres comienza con [, termina con ] y posee un contenido X
-1. C -> "/" "d": Una clase de caracteres especial es /d (deberia ser \d)
-1. C -> "/" "w": Una clase de caracteres especial es /w (deberia ser \w)
+1. C -> "/" "char": Una clase de caracteres especial es /d y otra /w (deberian ser \d y \w)
 1. X -> char: El contenido de una clase de caracteres puede ser un caracter
 1. X -> char - char: El contenido de una clase de caracteres puede ser un rango de caracteres
 1. X -> char X: El contenido de una clase de caracteres puede ser un caracter seguido de más contenido
