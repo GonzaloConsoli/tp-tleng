@@ -9,7 +9,7 @@ tokens = [
     'CHAR', 
     'P_OPEN',
     'P_CLOSE',
-    'OR',
+    'UNION',
     'KLEENE',
     'POSITIVE',
     'QUESTION',
@@ -30,7 +30,7 @@ t_ignore = ' \t'
 # Regexes para reconocer tokens simples
 t_P_OPEN = r'\('
 t_P_CLOSE = r'\)'
-t_OR = r'\|'
+t_UNION = r'\|'
 t_KLEENE = r'\*'
 t_POSITIVE = r'\+'
 t_QUESTION = r'\?'
