@@ -63,11 +63,14 @@ class ParseError(Exception):
 
 parser = yacc()
 
+def parse(string):
+    return parser.parse(string)
+
 def parse_and_print(string):
     startingValues = {}
 
     try:
-        parse_result = parser.parse(string)
+        parse_result = parse(string)
         evaluationResult = parse_result.evaluate(startingValues)
         print(str(evaluationResult))
     except Exception:
