@@ -43,7 +43,7 @@ Una breve explicación de cada una:
 1. U -> R "+": Un operador unario es la clausura positiva
 1. U -> R "?": Un operador unario es el opcional
 1. U -> R "{" n "}" : Un operador unario es el cuantificador simple
-1. U -> R "{" n "," m "}": Un operador unario es el cuantificador doble
+1. U -> R "{" n "," n "}": Un operador unario es el cuantificador doble
 1. C -> "[" X "]": Una clase de caracteres comienza con [, termina con ] y posee un contenido X
 1. C -> "/" "d": Una clase de caracteres especial es /d (deberia ser \d)
 1. C -> "/" "w": Una clase de caracteres especial es /w (deberia ser \w)
