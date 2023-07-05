@@ -79,6 +79,18 @@ def p_char(p):
     '''
     p[0] = Char(p[1])
 
+def p_parenthesis_regex(p):
+    '''
+    regex : P_OPEN regex P_CLOSE
+    '''
+    p[0] = p[1]
+
+def p_parenthesis_lambda(p):
+    '''
+    regex : P_OPEN P_CLOSE
+    '''
+    p[0] = Lambda()
+
 
 # Manejo de errores
 def p_error(p):
