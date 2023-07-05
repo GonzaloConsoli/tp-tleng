@@ -57,7 +57,7 @@ def t_NUM(t):
 
 
 def t_CHAR(t):
-    r'[a-zA-Z_$][a-zA-Z_$0-9]*'
+    r'.'
     t.value = str(t.value)
     return t
 
