@@ -116,12 +116,25 @@ def test_class_with_many_chars():
     assert result.match('a')
     assert result.match('b')
 
-def test_class_with_many_ranges():
-    regex = "[a-zA-Z0-9]"
+def test_class_with_many_chars_ranges():
+    regex = "[a-zA-Z]"
     result = parse(regex)
     assert result.match('b')
     assert result.match('B')
+
+def test_class_with_number_range():
+    regex = "[0-9]"
+    result = parse(regex)
+    assert result.match('0')
     assert result.match('1')
+    assert result.match('2')
+    assert result.match('3')
+    assert result.match('4')
+    assert result.match('5')
+    assert result.match('6')
+    assert result.match('7')
+    assert result.match('8')
+    assert result.match('9')
 
 def test_special_class_d():
     regex = "\\d"
