@@ -1,5 +1,6 @@
 from regex_parser.our_parser import parse
 from regex import Union, Char, Concat, Star, Plus, Lambda
+import pytest
 
 def test_union_of_char():
     regex = "a|b"
@@ -183,3 +184,8 @@ def test_union_of_concat_of_chars():
     assert isinstance(result, Union)
     assert isinstance(result.exp1, Concat)
     assert isinstance(result.exp2, Concat)
+
+def test_kleene_kleene():
+    regex = "a**"
+    result = parse(regex)
+    assert result is None

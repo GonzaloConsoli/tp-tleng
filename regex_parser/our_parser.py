@@ -39,6 +39,7 @@ def p_kleene_regex(p):
     '''
     regex :  regex KLEENE
     '''
+    if isinstance(p[1], Star): raise SyntaxError
     p[0] = Star(p[1])
 
 def p_positive_regex(p):
