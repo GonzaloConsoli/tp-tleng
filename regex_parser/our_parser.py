@@ -102,11 +102,6 @@ def p_double_quantifier(p):
 def p_char(p):
     '''
     regex : CHAR
-    '''
-    p[0] = Char(p[1])
-
-def p_num(p):
-    '''
     regex : NUM
     '''
     p[0] = Char(str(p[1]))
