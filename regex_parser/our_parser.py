@@ -75,13 +75,19 @@ def p_simple_quantifier(p):
         current = Concat(current, base)
         appearances = appearances - 1;
     p[0] = current
+    p[0].is_simple_quantifier = True
 
 def p_double_quantifier(p):
     '''
     regex : regex CB_OPEN NUM COMMA NUM CB_CLOSE
     '''
     if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
-    
+
+    if not hasattr(p[1], 'is_simple_quantifier'):
+        p[1].is_simple_quantifier = False
+
+    if p[1].is_simple_quantifier and not p[1].parenthesized: raise SyntaxError
+
     base = p[1]
     min = p[3]
     max = p[5]
@@ -123,6 +129,7 @@ def p_class(p):
     regex : SB_OPEN content SB_CLOSE
     '''
     p[0] = p[2]
+    p[0].parenthesized = True
 
 def p_class_starting_with_minus(p):
     '''
