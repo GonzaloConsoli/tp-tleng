@@ -80,6 +80,8 @@ def p_double_quantifier(p):
     '''
     regex : regex CB_OPEN NUM COMMA NUM CB_CLOSE
     '''
+    if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
+    
     base = p[1]
     min = p[3]
     max = p[5]
