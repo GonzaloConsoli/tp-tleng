@@ -116,6 +116,13 @@ def test_class_with_many_chars():
     assert result.match('a')
     assert result.match('b')
 
+def test_class_with_many_ranges():
+    regex = "[a-zA-Z0-9]"
+    result = parse(regex)
+    assert result.match('b')
+    assert result.match('B')
+    assert result.match('1')
+
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"
     result = parse(regex)

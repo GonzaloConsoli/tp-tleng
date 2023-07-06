@@ -134,7 +134,15 @@ def p_content_range_append(p):
     '''
     content : CHAR MINUS CHAR content
     '''
-    p[0] = Union(p[1], p[4])
+    chars = []
+    for i in range(ord(p[1]), ord(p[3])+1):
+        chars.append(chr(i))
+
+    current = Lambda()
+    for char in chars:
+        current = Union(current, Char(char))
+
+    p[0] = Union(current, p[4])
 
 # def p_special_classes(p):
 #     '''
