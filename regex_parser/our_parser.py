@@ -5,6 +5,7 @@ from .lexer import tokens
 precedence = (
         ('left', 'UNION'),
         ('left', 'CONCAT'),
+        ('nonassoc', 'KLEENE', 'POSITIVE', 'QUESTION', 'CB_OPEN')
 )
 
 __all__ = ["parser", "parse_and_print"]
