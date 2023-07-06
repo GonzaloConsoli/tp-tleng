@@ -204,6 +204,11 @@ def test_kleene_kleene():
     result = parse(regex)
     assert result is None
 
+def test_question_question():
+    regex = "a??"
+    result = parse(regex)
+    assert result is None
+
 def test_class_positive_closure():
     regex = "[ab]+"
     result = parse(regex)

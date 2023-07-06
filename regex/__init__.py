@@ -139,11 +139,11 @@ class Concat(RegEx):
 
 class Union(RegEx):
     """Expresión regular que denota la unión de dos expresiones regulares."""
-        
     def __init__(self, exp1: RegEx, exp2: RegEx):
         super().__init__()
         self.exp1 = exp1
         self.exp2 = exp2
+        self.is_question=False
 
     def naive_match(self, word: str):
         return self.exp1.naive_match(word) or self.exp2.naive_match(word)
