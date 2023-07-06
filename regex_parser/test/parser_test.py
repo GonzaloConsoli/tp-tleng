@@ -110,6 +110,11 @@ def test_class_with_range():
     assert result.match('d')
     assert not result.match('e')
 
+def test_class_with_many_chars():
+    regex = "[ab]"
+    result = parse(regex)
+    assert result.match('a')
+    assert result.match('b')
 
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"
