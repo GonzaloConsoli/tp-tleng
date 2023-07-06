@@ -304,9 +304,10 @@ class ParseError(Exception):
     pass
 
 
-parser = yacc(debug=True)
+parser = yacc()
 
 def parse(string):
+    if string == '': return Lambda()
     return parser.parse(string)
 
 def parse_and_print(string):

@@ -225,3 +225,8 @@ def test_union():
     regex = "\\|"
     result = parse(regex)
     assert result.match('|')
+
+def test_empty():
+    regex = ""
+    result = parse(regex)
+    assert result.match('')
