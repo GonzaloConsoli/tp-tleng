@@ -271,3 +271,22 @@ def test_sb_cb_sb():
     regex = "[{]"
     result = parse(regex)
     assert result.match('{')
+
+def test_char_backslash_cb_num_backslash_cb():
+    regex = "a\{1\}"
+    result = parse(regex)
+    assert result.match('a{1}')
+
+def test_sb_minus_char_sb():
+    regex = "[-a]"
+    result = parse(regex)
+    assert result.match('a')
+    assert result.match('-')
+
+def test_with_():
+    regex = "[a-zA-Z0-9_]"
+    result = parse(regex)
+    assert result.match('b')
+    assert result.match('B')
+    assert result.match('2')
+    assert result.match('_')

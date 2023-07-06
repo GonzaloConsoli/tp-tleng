@@ -115,6 +115,12 @@ def p_class(p):
     '''
     p[0] = p[2]
 
+def p_class_starting_with_minus(p):
+    '''
+    regex : SB_OPEN MINUS content SB_CLOSE
+    '''
+    p[0] = Union(Char(p[2]), p[3])
+
 def p_content_char(p):
     '''
     content : CHAR
@@ -267,12 +273,14 @@ def p_question(p):
 def p_cbopen(p):
     '''
     regex : CB_OPEN
+    regex : BACKSLASH CB_OPEN
     '''
     p[0] = Char('{')
 
 def p_cbclose(p):
     '''
     regex : CB_CLOSE
+    regex : BACKSLASH CB_CLOSE
     '''
     p[0] = Char('}')
 

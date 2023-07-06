@@ -49,7 +49,7 @@ def t_NUM(t):
 
 
 def t_CHAR(t):
-    r'[a-zA-Z0-9\s]'
+    r'[a-zA-Z0-9\s_]'
     t.value = str(t.value)
     return t
 
