@@ -73,15 +73,18 @@ def test_many_char_positive():
     assert result.exp2.exp1.char == 'b'
 
 def test_simple_quantifier():
-    regex = "a{2}"
+    regex = "a{3}"
     result = parse(regex)
-    assert isinstance(result, Concat)
-    assert isinstance(result.exp1, Concat)
-    assert isinstance(result.exp2, Char)
-    assert isinstance(result.exp1.exp1, Lambda)
-    assert isinstance(result.exp1.exp2, Char)
-    assert result.exp1.exp2.char == 'a'
-    assert result.exp2.char == 'a'
+    assert result.match('aaa')
+
+def test_double_quantifier():
+    regex = "a{3,5}"
+    result = parse(regex)
+    assert not result.match('aa')
+    assert result.match('aaa')
+    assert result.match('aaaa')
+    assert result.match('aaaaa')
+    assert not result.match('aaaaaa')
 
 
 def test_union_of_concat_of_twos_char_and_one_char():
