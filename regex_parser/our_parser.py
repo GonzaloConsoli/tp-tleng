@@ -261,13 +261,13 @@ def p_question(p):
 
 def p_cbopen(p):
     '''
-    regex : BACKSLASH CB_OPEN
+    regex : CB_OPEN
     '''
     p[0] = Char('{')
 
 def p_cbclose(p):
     '''
-    regex : BACKSLASH CB_CLOSE
+    regex : CB_CLOSE
     '''
     p[0] = Char('}')
 
@@ -292,7 +292,7 @@ def p_backslash(p):
 
 def p_minus(p):
     '''
-    regex : BACKSLASH MINUS
+    regex : MINUS
     '''
     p[0] = Char('-')
 

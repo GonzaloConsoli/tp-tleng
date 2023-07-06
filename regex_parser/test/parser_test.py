@@ -252,7 +252,12 @@ def test_empty_class():
     assert not result.match('')
     
 
-def test_empty_class():
+def test_class_with_minus():
     regex = "[-]"
     result = parse(regex)
     assert result.match('-')
+
+def test_cb_minus_cb():
+    regex = "{-}"
+    result = parse(regex)
+    assert result.match('{-}')
