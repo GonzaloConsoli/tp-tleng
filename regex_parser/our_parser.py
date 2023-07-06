@@ -66,6 +66,8 @@ def p_simple_quantifier(p):
     '''
     regex : regex CB_OPEN NUM CB_CLOSE
     '''
+    if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
+
     base = p[1]
     appearances = p[3]
     current = Lambda()
