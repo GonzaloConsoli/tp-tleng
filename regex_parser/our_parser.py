@@ -337,6 +337,12 @@ def p_empty_class(p):
     '''
     p[0] = Empty()
 
+def p_bad_quantifier(p):
+    '''
+    regex : CB_OPEN NUM CB_CLOSE
+    '''
+    raise SyntaxError
+
 # Manejo de errores
 def p_error(p):
     if p:
