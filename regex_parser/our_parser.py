@@ -3,14 +3,8 @@ from regex import Union, Concat, Star, Plus, Lambda, Char
 from .lexer import tokens
 
 precedence = (
-        # ('left', 'IF', 'THEN', 'ELSE'),
-        # ('left', 'PLUS', 'MINUS'),
-        # ('left', 'TIMES'),
-        # ('right', 'EQUALS', 'LESS_THAN', 'GREATER_THAN'),
-        # ('right', 'AND'),
-        # ('right', 'OR'),
-        # ('right', 'TO'),
-        # ('left', 'NOT', 'UMINUS')
+        ('left', 'UNION'),
+        ('left', 'CONCAT'),
 )
 
 __all__ = ["parser", "parse_and_print"]
@@ -25,7 +19,7 @@ def p_union_regex(p):
 
 def p_concat_regex(p):
     '''
-    regex : regex regex
+    regex : regex regex %prec CONCAT
     '''
     p[0] = Concat(p[1], p[2])
 
