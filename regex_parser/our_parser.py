@@ -117,6 +117,12 @@ def p_content_char_append(p):
     '''
     p[0] = Union(Char(p[1]), p[2])
 
+def p_content_num(p):
+    '''
+    content : NUM
+    '''
+    p[0] = Char(str(p[1]))
+
 def p_content_range(p):
     '''
     content : CHAR MINUS CHAR
