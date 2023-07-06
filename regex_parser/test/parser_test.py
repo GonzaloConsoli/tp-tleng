@@ -101,6 +101,17 @@ def test_class_with_char():
     result = parse(regex)
     assert result.match('a')
 
+def test_class_with_many_chars():
+    regex = "[ab]"
+    result = parse(regex)
+    assert result.match('a')
+    assert result.match('b')
+
+def test_class_with_num():
+    regex = "[2]"
+    result = parse(regex)
+    assert result.match('2')
+
 def test_class_with_range():
     regex = "[a-d]"
     result = parse(regex)
