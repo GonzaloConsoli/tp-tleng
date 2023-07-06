@@ -1,5 +1,5 @@
 from ply.yacc import yacc
-from regex import Union, Concat, Star, Plus, Lambda, Char
+from regex import Union, Concat, Star, Plus, Lambda, Char, Empty
 from .lexer import tokens
 
 precedence = (
@@ -145,7 +145,7 @@ def p_content_range(p):
     for i in range(ord(p[1]), ord(p[3])+1):
         chars.append(chr(i))
 
-    current = Lambda()
+    current = Empty()
     for char in chars:
         current = Union(current, Char(char))
 
@@ -161,7 +161,7 @@ def p_content_range_append(p):
     for i in range(ord(p[1]), ord(p[3])+1):
         chars.append(chr(i))
 
-    current = Lambda()
+    current = Empty()
     for char in chars:
         current = Union(current, Char(char))
 
@@ -177,7 +177,7 @@ def p_num_content_range(p):
     for i in range(p[1], p[3]+1):
         chars.append(str(i))
 
-    current = Lambda()
+    current = Empty()
     for char in chars:
         current = Union(current, Char(char))
 
@@ -191,7 +191,7 @@ def p_num_content_range_append(p):
     for i in range(p[1], p[3]+1):
         chars.append(str(i))
 
-    current = Lambda()
+    current = Empty()
     for char in chars:
         current = Union(current, Char(char))
 
@@ -203,7 +203,7 @@ def p_special_classes(p):
     '''
     char = p[2]
     if char == 'd':
-        current = Lambda()
+        current = Empty()
         for i in range(0, 10):
             current = Union(current, Char(str(i)))
         p[0] = current
