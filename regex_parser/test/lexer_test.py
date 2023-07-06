@@ -11,4 +11,4 @@ def test_basic_chars(capsys):
     regex = "ab|cd"
     tokenize_and_print(regex)
     captured = capsys.readouterr()
-    assert captured.out == "[('CHAR', 'ab'), ('UNION', '|'), ('CHAR', 'cd')]\n"
+    assert captured.out == "[('CHAR', 'a'), ('CHAR', 'b'), ('UNION', '|'), ('CHAR', 'c'), ('CHAR', 'd')]\n"
