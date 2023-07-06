@@ -110,6 +110,12 @@ def p_content_char(p):
     '''
     p[0] = Char(p[1])
 
+def p_content_char_append(p):
+    '''
+    content : CHAR content
+    '''
+    p[0] = Union(Char(p[1]), p[2])
+
 def p_content_range(p):
     '''
     content : CHAR MINUS CHAR
@@ -124,12 +130,6 @@ def p_content_range(p):
 
     p[0] = current
 
-def p_content_char_append(p):
-    '''
-    content : CHAR content
-    '''
-    p[0] = Union(Char(p[1]), p[2])
-
 def p_content_range_append(p):
     '''
     content : CHAR MINUS CHAR content
@@ -137,6 +137,34 @@ def p_content_range_append(p):
     chars = []
     for i in range(ord(p[1]), ord(p[3])+1):
         chars.append(chr(i))
+
+    current = Lambda()
+    for char in chars:
+        current = Union(current, Char(char))
+
+    p[0] = Union(current, p[4])
+
+def p_num_content_range(p):
+    '''
+    content : NUM MINUS NUM
+    '''
+    chars = []
+    for i in range(p[1], p[3]+1):
+        chars.append(str(i))
+
+    current = Lambda()
+    for char in chars:
+        current = Union(current, Char(char))
+
+    p[0] = current
+
+def p_num_content_range_append(p):
+    '''
+    content : NUM MINUS NUM content
+    '''
+    chars = []
+    for i in range(p[1], p[3]+1):
+        chars.append(str(i))
 
     current = Lambda()
     for char in chars:
