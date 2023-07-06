@@ -261,3 +261,8 @@ def test_cb_minus_cb():
     regex = "{-}"
     result = parse(regex)
     assert result.match('{-}')
+
+def test_sb_cb_sb():
+    regex = "[{]"
+    result = parse(regex)
+    assert result.match('{')

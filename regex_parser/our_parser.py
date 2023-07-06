@@ -115,6 +115,7 @@ def p_content_char(p):
     '''
     content : CHAR
     content : MINUS
+    content : CB_OPEN
     '''
     p[0] = Char(p[1])
 
