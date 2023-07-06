@@ -230,3 +230,9 @@ def test_empty():
     regex = ""
     result = parse(regex)
     assert result.match('')
+
+def test_class_with_plus():
+    regex = "[\\+]"
+    result = parse(regex)
+    assert result.match('+')
+    

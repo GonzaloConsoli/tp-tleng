@@ -234,14 +234,17 @@ def p_union(p):
 def p_kleene(p):
     '''
     regex : BACKSLASH KLEENE
+    content : BACKSLASH KLEENE
     '''
     p[0] = Char('*')
 
 def p_positive(p):
     '''
     regex : BACKSLASH POSITIVE
+    content : BACKSLASH POSITIVE
     '''
     p[0] = Char('+')
+
 
 def p_question(p):
     '''
@@ -264,6 +267,7 @@ def p_cbclose(p):
 def p_sbopen(p):
     '''
     regex : BACKSLASH SB_OPEN
+    content : BACKSLASH SB_OPEN
     '''
     p[0] = Char('[')
 
