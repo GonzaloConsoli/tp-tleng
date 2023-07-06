@@ -43,7 +43,7 @@ def p_optional_regex(p):
     '''
     p[0] = Union(p[1], Lambda())
 
-def p_simple_cuantifier(p):
+def p_simple_quantifier(p):
     '''
     regex : regex CB_OPEN NUM CB_CLOSE
     '''
@@ -52,9 +52,10 @@ def p_simple_cuantifier(p):
     current = Lambda()
     while (appearances > 0):
         current = Concat(current, base)
+        appearances = appearances - 1;
     p[0] = current
 
-def p_double_cuantifier(p):
+def p_double_quantifier(p):
     '''
     regex : regex CB_OPEN NUM COMMA NUM CB_CLOSE
     '''
