@@ -251,3 +251,8 @@ def test_empty_class():
     result = parse(regex)
     assert not result.match('')
     
+
+def test_empty_class():
+    regex = "[-]"
+    result = parse(regex)
+    assert result.match('-')

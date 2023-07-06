@@ -114,6 +114,7 @@ def p_class(p):
 def p_content_char(p):
     '''
     content : CHAR
+    content : MINUS
     '''
     p[0] = Char(p[1])
 
