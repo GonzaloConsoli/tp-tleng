@@ -213,17 +213,83 @@ def p_special_classes(p):
     else:
         p[0] = Concat(Char('\\'), Char(char))
 
-def p_question(p):
+def p_popen(p):
     '''
-    regex : BACKSLASH QUESTION
+    regex : BACKSLASH P_OPEN
     '''
-    p[0] = Char('?')
+    p[0] = Char('(')
+
+def p_pclose(p):
+    '''
+    regex : BACKSLASH P_CLOSE
+    '''
+    p[0] = Char(')')
 
 def p_union(p):
     '''
     regex : BACKSLASH UNION
     '''
     p[0] = Char('|')
+
+def p_kleene(p):
+    '''
+    regex : BACKSLASH KLEENE
+    '''
+    p[0] = Char('*')
+
+def p_positive(p):
+    '''
+    regex : BACKSLASH POSITIVE
+    '''
+    p[0] = Char('+')
+
+def p_question(p):
+    '''
+    regex : BACKSLASH QUESTION
+    '''
+    p[0] = Char('?')
+
+def p_cbopen(p):
+    '''
+    regex : BACKSLASH CB_OPEN
+    '''
+    p[0] = Char('[')
+
+def p_cbclose(p):
+    '''
+    regex : BACKSLASH CB_CLOSE
+    '''
+    p[0] = Char(']')
+
+def p_sbopen(p):
+    '''
+    regex : BACKSLASH SB_OPEN
+    '''
+    p[0] = Char('{')
+
+def p_sbclose(p):
+    '''
+    regex : BACKSLASH SB_CLOSE
+    '''
+    p[0] = Char('}')
+
+def p_backslash(p):
+    '''
+    regex : BACKSLASH BACKSLASH
+    '''
+    p[0] = Char('\\')
+
+def p_minus(p):
+    '''
+    regex : BACKSLASH MINUS
+    '''
+    p[0] = Char('-')
+
+def p_comma(p):
+    '''
+    regex : BACKSLASH COMMA
+    '''
+    p[0] = Char(',')
 
 # Manejo de errores
 def p_error(p):
@@ -238,7 +304,7 @@ class ParseError(Exception):
     pass
 
 
-parser = yacc()
+parser = yacc(debug=True)
 
 def parse(string):
     return parser.parse(string)
