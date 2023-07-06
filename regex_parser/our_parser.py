@@ -127,6 +127,8 @@ def p_content_range(p):
     '''
     content : CHAR MINUS CHAR
     '''
+    if ord(p[3]) < ord(p[1]): raise SyntaxError
+
     chars = []
     for i in range(ord(p[1]), ord(p[3])+1):
         chars.append(chr(i))
@@ -141,6 +143,8 @@ def p_content_range_append(p):
     '''
     content : CHAR MINUS CHAR content
     '''
+    if ord(p[3]) < ord(p[1]): raise SyntaxError
+
     chars = []
     for i in range(ord(p[1]), ord(p[3])+1):
         chars.append(chr(i))
@@ -155,6 +159,8 @@ def p_num_content_range(p):
     '''
     content : NUM MINUS NUM
     '''
+    if p[3] < p[1]: raise SyntaxError
+
     chars = []
     for i in range(p[1], p[3]+1):
         chars.append(str(i))
