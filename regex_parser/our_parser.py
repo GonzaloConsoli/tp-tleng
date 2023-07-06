@@ -5,7 +5,17 @@ from .lexer import tokens
 precedence = (
         ('left', 'UNION'),
         ('left', 'CONCAT'),
-        ('nonassoc', 'KLEENE', 'POSITIVE', 'QUESTION', 'CB_OPEN')
+        ('nonassoc', 'KLEENE', 'POSITIVE', 'QUESTION', 'CB_OPEN'),
+        ('nonassoc','CHAR', 
+        'P_OPEN',
+        'P_CLOSE',
+        'CB_CLOSE',
+        'NUM',
+        'SB_OPEN',
+        'SB_CLOSE',
+        'BACKSLASH',
+        'MINUS',
+        'COMMA')
 )
 
 __all__ = ["parser", "parse_and_print"]
