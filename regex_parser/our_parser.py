@@ -144,18 +144,27 @@ def p_content_range_append(p):
 
     p[0] = Union(current, p[4])
 
-# def p_special_classes(p):
-#     '''
-#     regex : BACKSLASH CHAR
-#     '''
-#     breakpoint()
-#     char = p[2]
-#     if char == 'd':
-#         p[0] = '[0-9]'
-#     elif char == 'w':
-#         p[0] = '[a-zA-Z0-9_]'
-#     else:
-#         p[0] = Concat(Char('\\'), Char(char))
+def p_special_classes(p):
+    '''
+    regex : BACKSLASH CHAR
+    '''
+    char = p[2]
+    if char == 'd':
+        current = Lambda()
+        for i in range(0, 10):
+            current = Union(current, Char(str(i)))
+        p[0] = current
+    elif char == 'w':
+        current = Char('_')
+        for i in range(ord('a'), ord('z')+1):
+            current = Union(current, Char(chr(i)))
+        for i in range(ord('A'), ord('Z')+1):
+            current = Union(current, Char(chr(i)))
+        for i in range(0, 10):
+            current = Union(current, Char(str(i)))
+        p[0] = current
+    else:
+        p[0] = Concat(Char('\\'), Char(char))
 
 
 

@@ -123,13 +123,39 @@ def test_class_with_many_ranges():
     assert result.match('B')
     assert result.match('1')
 
+def test_special_class_d():
+    regex = "\\d"
+    result = parse(regex)
+    assert result.match('0')
+    assert result.match('1')
+    assert result.match('2')
+    assert result.match('3')
+    assert result.match('4')
+    assert result.match('5')
+    assert result.match('6')
+    assert result.match('7')
+    assert result.match('8')
+    assert result.match('9')
+    
+def test_special_class_w():
+    regex = "\\w"
+    result = parse(regex)
+    assert result.match('b')
+    assert result.match('B')
+    assert result.match('1')
+    assert result.match('_')
+
+def test_non_special_class():
+    regex = "\\x"
+    result = parse(regex)
+    assert result.match('\\x')
+
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"
     result = parse(regex)
     assert isinstance(result, Union)
     assert isinstance(result.exp1, Concat)
     assert isinstance(result.exp2, Char)
-
 
 def test_union_of_concat_of_one_char_and_two_chars():
     regex = "a|cd"
@@ -144,7 +170,3 @@ def test_union_of_concat_of_chars():
     assert isinstance(result, Union)
     assert isinstance(result.exp1, Concat)
     assert isinstance(result.exp2, Concat)
-
-# def test_special_class_d():
-#     regex = "\d"
-#     result = parse(regex)
