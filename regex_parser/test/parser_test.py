@@ -239,9 +239,15 @@ def test_class_with_plus():
     result = parse(regex)
     assert result.match('+')
     
-def test():
+def test_class_with_char_num_and_positive():
     regex = "[a1\\+]"
     result = parse(regex)
     assert result.match('a')
     assert result.match('1')
     assert result.match('+')
+
+def test_empty_class():
+    regex = "[]"
+    result = parse(regex)
+    assert not result.match('')
+    

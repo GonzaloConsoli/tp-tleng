@@ -301,6 +301,12 @@ def p_comma(p):
     '''
     p[0] = Char(',')
 
+def p_empty_class(p):
+    '''
+    regex : SB_OPEN SB_CLOSE
+    '''
+    p[0] = Empty()
+
 # Manejo de errores
 def p_error(p):
     if p:
