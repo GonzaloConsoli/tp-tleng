@@ -87,6 +87,58 @@ def p_parenthesis_lambda(p):
     '''
     p[0] = Lambda()
 
+def p_class(p):
+    '''
+    regex : SB_OPEN content SB_CLOSE
+    '''
+    p[0] = p[2]
+
+def p_content_char(p):
+    '''
+    content : CHAR
+    '''
+    p[0] = Char(p[1])
+
+def p_content_range(p):
+    '''
+    content : CHAR MINUS CHAR
+    '''
+    chars = []
+    for i in range(ord(p[1]), ord(p[3])+1):
+        chars.append(chr(i))
+
+    current = Lambda()
+    for char in chars:
+        current = Concat(current, Char(char))
+
+    p[0] = current
+
+def p_content_char_append(p):
+    '''
+    content : CHAR content
+    '''
+    p[0] = Union(p[1], p[2])
+
+def p_content_range_append(p):
+    '''
+    content : CHAR MINUS CHAR content
+    '''
+    p[0] = Union(p[1], p[4])
+
+# def p_special_classes(p):
+#     '''
+#     regex : BACKSLASH CHAR
+#     '''
+#     breakpoint()
+#     char = p[2]
+#     if char == 'd':
+#         p[0] = '[0-9]'
+#     elif char == 'w':
+#         p[0] = '[a-zA-Z0-9_]'
+#     else:
+#         p[0] = Concat(Char('\\'), Char(char))
+
+
 
 # Manejo de errores
 def p_error(p):

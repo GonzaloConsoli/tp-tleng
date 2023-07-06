@@ -1,5 +1,5 @@
 from regex_parser.our_parser import parse
-from regex import Union, Char, Concat, Star
+from regex import Union, Char, Concat, Star, Plus
 
 def test_union_of_char():
     regex = "a|b"
@@ -36,12 +36,30 @@ def test_many_char_kleene():
     assert isinstance(result.exp2.exp, Char)
     assert result.exp2.exp.char == 'b'
 
+def test_one_char_positive():
+    regex = "a+"
+    result = parse(regex)
+    assert isinstance(result, Plus)
+    assert isinstance(result.exp, Char)
+    assert result.exp.char == 'a'
+
+def test_many_char_positive():
+    regex = "ab+"
+    result = parse(regex)
+    assert isinstance(result, Concat)
+    assert isinstance(result.exp1, Char)
+    assert result.exp1.char == 'a'
+    assert isinstance(result.exp2, Plus)
+    assert isinstance(result.exp2.exp, Char)
+    assert result.exp2.exp.char == 'b'
+
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"
     result = parse(regex)
     assert isinstance(result, Union)
     assert isinstance(result.exp1, Concat)
     assert isinstance(result.exp2, Char)
+
 
 def test_union_of_concat_of_one_char_and_two_chars():
     regex = "a|cd"
@@ -56,3 +74,7 @@ def test_union_of_concat_of_chars():
     assert isinstance(result, Union)
     assert isinstance(result.exp1, Concat)
     assert isinstance(result.exp2, Concat)
+
+# def test_special_class_d():
+#     regex = "\d"
+#     result = parse(regex)

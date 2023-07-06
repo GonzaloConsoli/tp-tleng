@@ -1,0 +1,401 @@
+Created by PLY (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    BACKSLASH
+    MINUS
+    SB_CLOSE
+    SB_OPEN
+
+Grammar
+
+Rule 0     S' -> regex
+Rule 1     regex -> regex UNION regex
+Rule 2     regex -> regex regex
+Rule 3     regex -> regex KLEENE
+Rule 4     regex -> regex POSITIVE
+Rule 5     regex -> regex QUESTION
+Rule 6     regex -> regex CB_OPEN NUM CB_CLOSE
+Rule 7     regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE
+Rule 8     regex -> CHAR
+Rule 9     regex -> P_OPEN regex P_CLOSE
+Rule 10    regex -> P_OPEN P_CLOSE
+
+Terminals, with rules where they appear
+
+BACKSLASH            : 
+CB_CLOSE             : 6 7
+CB_OPEN              : 6 7
+CHAR                 : 8
+COMMA                : 7
+KLEENE               : 3
+MINUS                : 
+NUM                  : 6 7 7
+POSITIVE             : 4
+P_CLOSE              : 9 10
+P_OPEN               : 9 10
+QUESTION             : 5
+SB_CLOSE             : 
+SB_OPEN              : 
+UNION                : 1
+error                : 
+
+Nonterminals, with rules where they appear
+
+regex                : 1 1 2 2 3 4 5 6 7 9 0
+
+
+state 0
+
+    (0) S' -> . regex
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    CHAR            shift and go to state 2
+    P_OPEN          shift and go to state 3
+
+    regex                          shift and go to state 1
+
+state 1
+
+    (0) S' -> regex .
+    (1) regex -> regex . UNION regex
+    (2) regex -> regex . regex
+    (3) regex -> regex . KLEENE
+    (4) regex -> regex . POSITIVE
+    (5) regex -> regex . QUESTION
+    (6) regex -> regex . CB_OPEN NUM CB_CLOSE
+    (7) regex -> regex . CB_OPEN NUM COMMA NUM CB_CLOSE
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    UNION           shift and go to state 5
+    KLEENE          shift and go to state 6
+    POSITIVE        shift and go to state 7
+    QUESTION        shift and go to state 8
+    CB_OPEN         shift and go to state 9
+    CHAR            shift and go to state 2
+    P_OPEN          shift and go to state 3
+
+    regex                          shift and go to state 4
+
+state 2
+
+    (8) regex -> CHAR .
+
+    UNION           reduce using rule 8 (regex -> CHAR .)
+    KLEENE          reduce using rule 8 (regex -> CHAR .)
+    POSITIVE        reduce using rule 8 (regex -> CHAR .)
+    QUESTION        reduce using rule 8 (regex -> CHAR .)
+    CB_OPEN         reduce using rule 8 (regex -> CHAR .)
+    CHAR            reduce using rule 8 (regex -> CHAR .)
+    P_OPEN          reduce using rule 8 (regex -> CHAR .)
+    $end            reduce using rule 8 (regex -> CHAR .)
+    P_CLOSE         reduce using rule 8 (regex -> CHAR .)
+
+
+state 3
+
+    (9) regex -> P_OPEN . regex P_CLOSE
+    (10) regex -> P_OPEN . P_CLOSE
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    P_CLOSE         shift and go to state 11
+    CHAR            shift and go to state 2
+    P_OPEN          shift and go to state 3
+
+    regex                          shift and go to state 10
+
+state 4
+
+    (2) regex -> regex regex .
+    (1) regex -> regex . UNION regex
+    (2) regex -> regex . regex
+    (3) regex -> regex . KLEENE
+    (4) regex -> regex . POSITIVE
+    (5) regex -> regex . QUESTION
+    (6) regex -> regex . CB_OPEN NUM CB_CLOSE
+    (7) regex -> regex . CB_OPEN NUM COMMA NUM CB_CLOSE
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    KLEENE          reduce using rule 2 (regex -> regex regex .)
+    POSITIVE        reduce using rule 2 (regex -> regex regex .)
+    QUESTION        reduce using rule 2 (regex -> regex regex .)
+    CB_OPEN         reduce using rule 2 (regex -> regex regex .)
+    CHAR            reduce using rule 2 (regex -> regex regex .)
+    P_OPEN          reduce using rule 2 (regex -> regex regex .)
+    $end            reduce using rule 2 (regex -> regex regex .)
+    P_CLOSE         reduce using rule 2 (regex -> regex regex .)
+    UNION           shift and go to state 5
+
+  ! UNION           [ reduce using rule 2 (regex -> regex regex .) ]
+  ! KLEENE          [ shift and go to state 6 ]
+  ! POSITIVE        [ shift and go to state 7 ]
+  ! QUESTION        [ shift and go to state 8 ]
+  ! CB_OPEN         [ shift and go to state 9 ]
+  ! CHAR            [ shift and go to state 2 ]
+  ! P_OPEN          [ shift and go to state 3 ]
+
+    regex                          shift and go to state 4
+
+state 5
+
+    (1) regex -> regex UNION . regex
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    CHAR            shift and go to state 2
+    P_OPEN          shift and go to state 3
+
+    regex                          shift and go to state 12
+
+state 6
+
+    (3) regex -> regex KLEENE .
+
+    UNION           reduce using rule 3 (regex -> regex KLEENE .)
+    KLEENE          reduce using rule 3 (regex -> regex KLEENE .)
+    POSITIVE        reduce using rule 3 (regex -> regex KLEENE .)
+    QUESTION        reduce using rule 3 (regex -> regex KLEENE .)
+    CB_OPEN         reduce using rule 3 (regex -> regex KLEENE .)
+    CHAR            reduce using rule 3 (regex -> regex KLEENE .)
+    P_OPEN          reduce using rule 3 (regex -> regex KLEENE .)
+    $end            reduce using rule 3 (regex -> regex KLEENE .)
+    P_CLOSE         reduce using rule 3 (regex -> regex KLEENE .)
+
+
+state 7
+
+    (4) regex -> regex POSITIVE .
+
+    UNION           reduce using rule 4 (regex -> regex POSITIVE .)
+    KLEENE          reduce using rule 4 (regex -> regex POSITIVE .)
+    POSITIVE        reduce using rule 4 (regex -> regex POSITIVE .)
+    QUESTION        reduce using rule 4 (regex -> regex POSITIVE .)
+    CB_OPEN         reduce using rule 4 (regex -> regex POSITIVE .)
+    CHAR            reduce using rule 4 (regex -> regex POSITIVE .)
+    P_OPEN          reduce using rule 4 (regex -> regex POSITIVE .)
+    $end            reduce using rule 4 (regex -> regex POSITIVE .)
+    P_CLOSE         reduce using rule 4 (regex -> regex POSITIVE .)
+
+
+state 8
+
+    (5) regex -> regex QUESTION .
+
+    UNION           reduce using rule 5 (regex -> regex QUESTION .)
+    KLEENE          reduce using rule 5 (regex -> regex QUESTION .)
+    POSITIVE        reduce using rule 5 (regex -> regex QUESTION .)
+    QUESTION        reduce using rule 5 (regex -> regex QUESTION .)
+    CB_OPEN         reduce using rule 5 (regex -> regex QUESTION .)
+    CHAR            reduce using rule 5 (regex -> regex QUESTION .)
+    P_OPEN          reduce using rule 5 (regex -> regex QUESTION .)
+    $end            reduce using rule 5 (regex -> regex QUESTION .)
+    P_CLOSE         reduce using rule 5 (regex -> regex QUESTION .)
+
+
+state 9
+
+    (6) regex -> regex CB_OPEN . NUM CB_CLOSE
+    (7) regex -> regex CB_OPEN . NUM COMMA NUM CB_CLOSE
+
+    NUM             shift and go to state 13
+
+
+state 10
+
+    (9) regex -> P_OPEN regex . P_CLOSE
+    (1) regex -> regex . UNION regex
+    (2) regex -> regex . regex
+    (3) regex -> regex . KLEENE
+    (4) regex -> regex . POSITIVE
+    (5) regex -> regex . QUESTION
+    (6) regex -> regex . CB_OPEN NUM CB_CLOSE
+    (7) regex -> regex . CB_OPEN NUM COMMA NUM CB_CLOSE
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    P_CLOSE         shift and go to state 14
+    UNION           shift and go to state 5
+    KLEENE          shift and go to state 6
+    POSITIVE        shift and go to state 7
+    QUESTION        shift and go to state 8
+    CB_OPEN         shift and go to state 9
+    CHAR            shift and go to state 2
+    P_OPEN          shift and go to state 3
+
+    regex                          shift and go to state 4
+
+state 11
+
+    (10) regex -> P_OPEN P_CLOSE .
+
+    UNION           reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    KLEENE          reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    POSITIVE        reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    QUESTION        reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    CB_OPEN         reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    CHAR            reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    P_OPEN          reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    $end            reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+    P_CLOSE         reduce using rule 10 (regex -> P_OPEN P_CLOSE .)
+
+
+state 12
+
+    (1) regex -> regex UNION regex .
+    (1) regex -> regex . UNION regex
+    (2) regex -> regex . regex
+    (3) regex -> regex . KLEENE
+    (4) regex -> regex . POSITIVE
+    (5) regex -> regex . QUESTION
+    (6) regex -> regex . CB_OPEN NUM CB_CLOSE
+    (7) regex -> regex . CB_OPEN NUM COMMA NUM CB_CLOSE
+    (1) regex -> . regex UNION regex
+    (2) regex -> . regex regex
+    (3) regex -> . regex KLEENE
+    (4) regex -> . regex POSITIVE
+    (5) regex -> . regex QUESTION
+    (6) regex -> . regex CB_OPEN NUM CB_CLOSE
+    (7) regex -> . regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    (8) regex -> . CHAR
+    (9) regex -> . P_OPEN regex P_CLOSE
+    (10) regex -> . P_OPEN P_CLOSE
+
+    UNION           reduce using rule 1 (regex -> regex UNION regex .)
+    KLEENE          reduce using rule 1 (regex -> regex UNION regex .)
+    POSITIVE        reduce using rule 1 (regex -> regex UNION regex .)
+    QUESTION        reduce using rule 1 (regex -> regex UNION regex .)
+    CB_OPEN         reduce using rule 1 (regex -> regex UNION regex .)
+    CHAR            reduce using rule 1 (regex -> regex UNION regex .)
+    P_OPEN          reduce using rule 1 (regex -> regex UNION regex .)
+    $end            reduce using rule 1 (regex -> regex UNION regex .)
+    P_CLOSE         reduce using rule 1 (regex -> regex UNION regex .)
+
+  ! UNION           [ shift and go to state 5 ]
+  ! KLEENE          [ shift and go to state 6 ]
+  ! POSITIVE        [ shift and go to state 7 ]
+  ! QUESTION        [ shift and go to state 8 ]
+  ! CB_OPEN         [ shift and go to state 9 ]
+  ! CHAR            [ shift and go to state 2 ]
+  ! P_OPEN          [ shift and go to state 3 ]
+
+    regex                          shift and go to state 4
+
+state 13
+
+    (6) regex -> regex CB_OPEN NUM . CB_CLOSE
+    (7) regex -> regex CB_OPEN NUM . COMMA NUM CB_CLOSE
+
+    CB_CLOSE        shift and go to state 15
+    COMMA           shift and go to state 16
+
+
+state 14
+
+    (9) regex -> P_OPEN regex P_CLOSE .
+
+    UNION           reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    KLEENE          reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    POSITIVE        reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    QUESTION        reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    CB_OPEN         reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    CHAR            reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    P_OPEN          reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    $end            reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+    P_CLOSE         reduce using rule 9 (regex -> P_OPEN regex P_CLOSE .)
+
+
+state 15
+
+    (6) regex -> regex CB_OPEN NUM CB_CLOSE .
+
+    UNION           reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    KLEENE          reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    POSITIVE        reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    QUESTION        reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    CB_OPEN         reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    CHAR            reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    P_OPEN          reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    $end            reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+    P_CLOSE         reduce using rule 6 (regex -> regex CB_OPEN NUM CB_CLOSE .)
+
+
+state 16
+
+    (7) regex -> regex CB_OPEN NUM COMMA . NUM CB_CLOSE
+
+    NUM             shift and go to state 17
+
+
+state 17
+
+    (7) regex -> regex CB_OPEN NUM COMMA NUM . CB_CLOSE
+
+    CB_CLOSE        shift and go to state 18
+
+
+state 18
+
+    (7) regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .
+
+    UNION           reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    KLEENE          reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    POSITIVE        reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    QUESTION        reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    CB_OPEN         reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    CHAR            reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    P_OPEN          reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    $end            reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+    P_CLOSE         reduce using rule 7 (regex -> regex CB_OPEN NUM COMMA NUM CB_CLOSE .)
+
