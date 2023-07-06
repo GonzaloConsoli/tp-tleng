@@ -123,6 +123,12 @@ def p_content_char_append(p):
     '''
     p[0] = Union(Char(p[1]), p[2])
 
+def p_content_num_append(p):
+    '''
+    content : NUM content
+    '''
+    p[0] = Union(Char(str(p[1])), p[2])
+
 def p_content_num(p):
     '''
     content : NUM

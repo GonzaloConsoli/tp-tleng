@@ -121,6 +121,7 @@ def test_class_with_range():
     assert result.match('c')
     assert result.match('d')
     assert not result.match('e')
+    assert not result.match('-')
 
 def test_class_with_many_chars():
     regex = "[ab]"
@@ -236,3 +237,9 @@ def test_class_with_plus():
     result = parse(regex)
     assert result.match('+')
     
+def test():
+    regex = "[a1\+]"
+    result = parse(regex)
+    assert result.match('a')
+    assert result.match('1')
+    assert result.match('+')
