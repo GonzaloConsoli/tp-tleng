@@ -38,7 +38,7 @@ Una breve explicación de cada una:
 1. R -> "(" R ")" : Una expresión regular puede ser una expresión regular entre paréntesis
 1. R -> "(" ")": Una expresión regular puede ser lambda entre paréntesis
 1. R -> "/" "char": Una expresión regular puede ser una clase de caracteres especial de la pinta /char: /d o bien /w (deberian ser \d y \w)
-1. C -> "[" X "]": Una expresión regular puede ser una clase de caracteres que comienza con [, termina con ] y posee un contenido X
+1. R -> "[" X "]": Una expresión regular puede ser una clase de caracteres que comienza con [, termina con ] y posee un contenido X
 1. X -> char: El contenido de una clase de caracteres puede ser un caracter
 1. X -> char - char: El contenido de una clase de caracteres puede ser un rango de caracteres
 1. X -> char X: El contenido de una clase de caracteres puede ser un caracter seguido de más contenido
