@@ -5,7 +5,7 @@ from .lexer import tokens
 precedence = (
         ('left', 'UNION'),
         ('left', 'CONCAT'),
-        ('nonassoc', 'KLEENE', 'POSITIVE', 'QUESTION', 'CB_OPEN'),
+        ('nonassoc', 'KLEENE', 'POSITIVE', 'QUESTION', 'CB_OPEN', 'SIMPLE_QUANTIFIER', 'DOUBLE_QUANTIFIER'),
         ('nonassoc','CHAR', 
         'P_OPEN',
         'P_CLOSE',
@@ -64,11 +64,11 @@ def p_optional_regex(p):
 
 def p_simple_quantifier(p):
     '''
-    regex : regex CB_OPEN NUM CB_CLOSE
+    regex : regex SIMPLE_QUANTIFIER
     '''
     if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
 
-    appearances = p[3]
+    appearances = p[2]
     if appearances == 0: 
         p[0] = Lambda()
     else:
@@ -83,7 +83,7 @@ def p_simple_quantifier(p):
 
 def p_double_quantifier(p):
     '''
-    regex : regex CB_OPEN NUM COMMA NUM CB_CLOSE
+    regex : regex DOUBLE_QUANTIFIER
     '''
     if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
 
@@ -93,8 +93,8 @@ def p_double_quantifier(p):
     if p[1].is_simple_quantifier and not p[1].parenthesized: raise SyntaxError
 
     base = p[1]
-    min = p[3]
-    max = p[5]
+    min = int(p[2][0])
+    max = int(p[2][1])
     current = Lambda()
     for i in range(0, max):
         if i < min:
@@ -335,12 +335,6 @@ def p_empty_class(p):
     regex : SB_OPEN SB_CLOSE
     '''
     p[0] = Empty()
-
-def p_bad_quantifier(p):
-    '''
-    regex : CB_OPEN NUM CB_CLOSE
-    '''
-    raise SyntaxError
 
 # Manejo de errores
 def p_error(p):

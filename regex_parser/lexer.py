@@ -1,5 +1,6 @@
 from ply.lex import lex
 import sys
+import re
 
 __all__ = ["lexer", "tokens", "tokenize"]
 
@@ -20,7 +21,9 @@ tokens = [
     'SB_CLOSE',
     'BACKSLASH',
     'MINUS',
-    'COMMA'
+    'COMMA',
+    'SIMPLE_QUANTIFIER',
+    'DOUBLE_QUANTIFIER'
 ]
 
 # Reglas para el analizador léxico
@@ -46,6 +49,17 @@ def t_NUM(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
+def t_SIMPLE_QUANTIFIER(t):
+    r'{\d+}'
+    t.value = int(re.findall('\d+', t.value)[0])
+    return t
+
+def t_DOUBLE_QUANTIFIER(t):
+    r'{\d+,\d+}'
+    t.value = re.findall('\d+', t.value)
+    return t
+
 
 
 def t_CHAR(t):
