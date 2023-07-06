@@ -1,5 +1,6 @@
 from ply.yacc import yacc
 from regex import Union, Concat, Star, Plus, Lambda, Char
+from .lexer import tokens
 
 precedence = (
         # ('left', 'IF', 'THEN', 'ELSE'),
@@ -105,7 +106,7 @@ class ParseError(Exception):
     pass
 
 
-# parser = yacc()
+parser = yacc()
 
 def parse(string):
     return parser.parse(string)
