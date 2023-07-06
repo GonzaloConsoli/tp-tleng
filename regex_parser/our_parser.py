@@ -264,12 +264,14 @@ def p_question(p):
 def p_cbopen(p):
     '''
     regex : CB_OPEN
+    regex : BACKSLASH CB_OPEN
     '''
     p[0] = Char('{')
 
 def p_cbclose(p):
     '''
     regex : CB_CLOSE
+    regex : BACKSLASH CB_CLOSE
     '''
     p[0] = Char('}')
 
