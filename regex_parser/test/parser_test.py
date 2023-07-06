@@ -200,7 +200,7 @@ def test_kleene_kleene():
     regex = "a**"
     result = parse(regex)
     assert result is None
-    
+
 def test_class_positive_closure():
     regex = "[ab]+"
     result = parse(regex)
@@ -215,3 +215,8 @@ def test_optional_positive_closure():
     result = parse(regex)
     assert result.match('')
     assert result.match('aaaaaa')
+
+def test_ignore_whitespaces():
+    regex = "a b"
+    result = parse(regex)
+    assert result.match('ab')
