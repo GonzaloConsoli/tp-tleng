@@ -80,7 +80,7 @@ def p_parenthesis_regex(p):
     '''
     regex : P_OPEN regex P_CLOSE
     '''
-    p[0] = p[1]
+    p[0] = p[2]
 
 def p_parenthesis_lambda(p):
     '''

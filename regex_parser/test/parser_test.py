@@ -86,6 +86,16 @@ def test_double_quantifier():
     assert result.match('aaaaa')
     assert not result.match('aaaaaa')
 
+def test_parenthesis():
+    regex = "(a)"
+    result = parse(regex)
+    assert result.match('a')
+
+def test_empty_parenthesis():
+    regex = "()"
+    result = parse(regex)
+    assert result.match('')
+
 
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"
