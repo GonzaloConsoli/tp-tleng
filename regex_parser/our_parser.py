@@ -46,6 +46,7 @@ def p_positive_regex(p):
     '''
     regex : regex POSITIVE
     '''
+    if isinstance(p[1], Plus): raise SyntaxError
     p[0] = Plus(p[1])
 
 def p_optional_regex(p):
