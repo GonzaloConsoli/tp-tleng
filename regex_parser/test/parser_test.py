@@ -96,6 +96,20 @@ def test_empty_parenthesis():
     result = parse(regex)
     assert result.match('')
 
+def test_class_with_char():
+    regex = "[a]"
+    result = parse(regex)
+    assert result.match('a')
+
+def test_class_with_range():
+    regex = "[a-d]"
+    result = parse(regex)
+    assert result.match('a')
+    assert result.match('b')
+    assert result.match('c')
+    assert result.match('d')
+    assert not result.match('e')
+
 
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"

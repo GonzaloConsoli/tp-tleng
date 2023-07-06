@@ -110,7 +110,7 @@ def p_content_range(p):
 
     current = Lambda()
     for char in chars:
-        current = Concat(current, Char(char))
+        current = Union(current, Char(char))
 
     p[0] = current
 
