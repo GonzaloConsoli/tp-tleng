@@ -68,13 +68,17 @@ def p_simple_quantifier(p):
     '''
     if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
 
-    base = p[1]
     appearances = p[3]
-    current = Lambda()
-    while (appearances > 0):
-        current = Concat(current, base)
-        appearances = appearances - 1;
-    p[0] = current
+    if appearances == 0: 
+        p[0] = Lambda()
+    else:
+        base = p[1]
+        appearances = appearances - 1
+        current = base
+        while (appearances > 0):
+            current = Concat(current, base)
+            appearances = appearances - 1;
+        p[0] = current
     p[0].is_simple_quantifier = True
 
 def p_double_quantifier(p):
