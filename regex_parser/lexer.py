@@ -25,9 +25,6 @@ tokens = [
 
 # Reglas para el analizador léxico
 
-# Ignoramos espacios y tabulaciones
-t_ignore = ' \t'
-
 # Regexes para reconocer tokens simples
 t_P_OPEN = r'\('
 t_P_CLOSE = r'\)'
@@ -44,11 +41,6 @@ t_MINUS = r'\-'
 t_COMMA = r','
 
 
-# Ignoramos saltos de línea y llevamos registro del número de línea actual
-def t_ignore_newline(t):
-    r'\n+'
-    t.lexer.lineno += t.value.count('\n')
-
 # Reconocimiento de tokens complejos
 def t_NUM(t):
     r'\d+'
@@ -57,7 +49,7 @@ def t_NUM(t):
 
 
 def t_CHAR(t):
-    r'[a-zA-Z0-9]'
+    r'[a-zA-Z0-9\s]'
     t.value = str(t.value)
     return t
 

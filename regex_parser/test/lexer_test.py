@@ -12,3 +12,9 @@ def test_basic_chars(capsys):
     tokenize_and_print(regex)
     captured = capsys.readouterr()
     assert captured.out == "[('CHAR', 'a'), ('CHAR', 'b'), ('UNION', '|'), ('CHAR', 'c'), ('CHAR', 'd')]\n"
+
+def test_whitespaces(capsys):
+    regex = " "
+    tokenize_and_print(regex)
+    captured = capsys.readouterr()
+    assert captured.out == "[('CHAR', ' ')]\n"
