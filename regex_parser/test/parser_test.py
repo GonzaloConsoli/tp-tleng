@@ -36,8 +36,21 @@ def test_many_char_kleene():
     assert isinstance(result.exp2.exp, Char)
     assert result.exp2.exp.char == 'b'
 
+def test_union_of_concat_of_twos_char_and_one_char():
+    regex = "ab|c"
+    result = parse(regex)
+    assert isinstance(result, Union)
+    assert isinstance(result.exp1, Concat)
+    assert isinstance(result.exp2, Char)
 
-def test_union_of_concat_of_chars(capsys):
+def test_union_of_concat_of_one_char_and_two_chars():
+    regex = "a|cd"
+    result = parse(regex)
+    assert isinstance(result, Union)
+    assert isinstance(result.exp1, Char)
+    assert isinstance(result.exp2, Concat)
+
+def test_union_of_concat_of_chars():
     regex = "ab|cd"
     result = parse(regex)
     assert isinstance(result, Union)
