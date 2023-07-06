@@ -213,7 +213,17 @@ def p_special_classes(p):
     else:
         p[0] = Concat(Char('\\'), Char(char))
 
+def p_question(p):
+    '''
+    regex : BACKSLASH QUESTION
+    '''
+    p[0] = Char('?')
 
+def p_union(p):
+    '''
+    regex : BACKSLASH UNION
+    '''
+    p[0] = Char('|')
 
 # Manejo de errores
 def p_error(p):

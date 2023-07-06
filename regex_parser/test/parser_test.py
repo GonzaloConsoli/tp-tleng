@@ -216,7 +216,12 @@ def test_optional_positive_closure():
     assert result.match('')
     assert result.match('aaaaaa')
 
-def test_ignore_whitespaces():
-    regex = "a b"
+def test_question():
+    regex = "\\?"
     result = parse(regex)
-    assert result.match('ab')
+    assert result.match('?')
+
+def test_union():
+    regex = "\\|"
+    result = parse(regex)
+    assert result.match('|')
