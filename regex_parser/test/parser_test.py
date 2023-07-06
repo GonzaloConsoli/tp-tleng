@@ -1,5 +1,5 @@
 from regex_parser.our_parser import parse
-from regex import Union, Char, Concat, Star, Plus
+from regex import Union, Char, Concat, Star, Plus, Lambda
 
 def test_union_of_char():
     regex = "a|b"
@@ -52,6 +52,26 @@ def test_many_char_positive():
     assert isinstance(result.exp2, Plus)
     assert isinstance(result.exp2.exp, Char)
     assert result.exp2.exp.char == 'b'
+
+def test_one_char_question():
+    regex = "a?"
+    result = parse(regex)
+    assert isinstance(result, Union)
+    assert isinstance(result.exp1, Char)
+    assert isinstance(result.exp2, Lambda)
+    assert result.exp1.char == 'a'
+
+def test_many_char_positive():
+    regex = "ab?"
+    result = parse(regex)
+    assert isinstance(result, Concat)
+    assert isinstance(result.exp1, Char)
+    assert result.exp1.char == 'a'
+    assert isinstance(result.exp2, Union)
+    assert isinstance(result.exp2.exp1, Char)
+    assert isinstance(result.exp2.exp2, Lambda)
+    assert result.exp2.exp1.char == 'b'
+
 
 def test_union_of_concat_of_twos_char_and_one_char():
     regex = "ab|c"
