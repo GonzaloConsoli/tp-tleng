@@ -56,6 +56,8 @@ def p_optional_regex(p):
     regex : regex QUESTION
     '''
     if isinstance(p[1],Union) and p[1].is_question: raise SyntaxError
+    if isinstance(p[1],Star) and not p[1].parenthesized: raise SyntaxError
+
     p[0] = Union(p[1], Lambda())
     p[0].is_question=True
     
