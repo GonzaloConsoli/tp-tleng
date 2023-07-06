@@ -277,3 +277,11 @@ def test_sb_minus_char_sb():
     result = parse(regex)
     assert result.match('a')
     assert result.match('-')
+
+def test_with_():
+    regex = "[a-zA-Z0-9_]"
+    result = parse(regex)
+    assert result.match('b')
+    assert result.match('B')
+    assert result.match('2')
+    assert result.match('_')
