@@ -47,6 +47,8 @@ def p_positive_regex(p):
     regex : regex POSITIVE
     '''
     if isinstance(p[1], Plus): raise SyntaxError
+    if isinstance(p[1], Star) and not p[1].parenthesized: raise SyntaxError
+
     p[0] = Plus(p[1])
 
 def p_optional_regex(p):
@@ -102,6 +104,7 @@ def p_parenthesis_regex(p):
     regex : P_OPEN regex P_CLOSE
     '''
     p[0] = p[2]
+    p[0].parenthesized = True
 
 def p_parenthesis_lambda(p):
     '''
