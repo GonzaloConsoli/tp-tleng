@@ -209,3 +209,9 @@ def test_class_positive_closure():
     assert result.match('aa')
     assert result.match('bb')
     assert result.match('ab')
+
+def test_optional_positive_closure():
+    regex = "(a+)?"
+    result = parse(regex)
+    assert result.match('')
+    assert result.match('aaaaaa')
