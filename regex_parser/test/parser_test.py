@@ -271,3 +271,9 @@ def test_char_backslash_cb_num_backslash_cb():
     regex = "a\{1\}"
     result = parse(regex)
     assert result.match('a{1}')
+
+def test_sb_minus_char_sb():
+    regex = "[-a]"
+    result = parse(regex)
+    assert result.match('a')
+    assert result.match('-')
