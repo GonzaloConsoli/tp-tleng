@@ -87,6 +87,12 @@ def p_char(p):
     '''
     p[0] = Char(p[1])
 
+def p_num(p):
+    '''
+    regex : NUM
+    '''
+    p[0] = Char(str(p[1]))
+
 def p_parenthesis_regex(p):
     '''
     regex : P_OPEN regex P_CLOSE
