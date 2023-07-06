@@ -253,25 +253,25 @@ def p_cbopen(p):
     '''
     regex : BACKSLASH CB_OPEN
     '''
-    p[0] = Char('[')
+    p[0] = Char('{')
 
 def p_cbclose(p):
     '''
     regex : BACKSLASH CB_CLOSE
     '''
-    p[0] = Char(']')
+    p[0] = Char('}')
 
 def p_sbopen(p):
     '''
     regex : BACKSLASH SB_OPEN
     '''
-    p[0] = Char('{')
+    p[0] = Char('[')
 
 def p_sbclose(p):
     '''
     regex : BACKSLASH SB_CLOSE
     '''
-    p[0] = Char('}')
+    p[0] = Char(']')
 
 def p_backslash(p):
     '''
